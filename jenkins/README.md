@@ -4,3 +4,4 @@
 
 - Default plugin set
 - Environment Injector
+- Locale plugin
