@@ -6,3 +6,9 @@
 - Environment Injector
 - Locale plugin
 - Publish Over SSH
+
+## Devops Environment
+
+### Vagrant Operations
+
+- [vagrant-status-all]()
