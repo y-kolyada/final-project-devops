@@ -15,3 +15,4 @@
 - [vagrant-up-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-all.sh)
 - [vagrant-halt-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-all.sh)
 - [vagrant-up-development](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-development.sh)
+- [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh)
