@@ -17,3 +17,4 @@
 - [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh)
 - [vagrant-halt-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-all.sh)
 - [vagrant-halt-integration](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-integration.sh)
+- [vagrant-halt-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-developers.sh)

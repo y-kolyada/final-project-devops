@@ -1,7 +1,8 @@
 #!/bin/bash
-# vagrant-up-developers.sh
+
+# vagrant-halt-developers.sh
 # updated: 2023-02-03
 
 cd $FINAL_PROJECT_DEVOPS_HOME/vagrant
-vagrant up dev001
+vagrant halt dev001
 vagrant status
