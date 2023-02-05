@@ -24,5 +24,5 @@
 ### Local DEV Environment
 
 - [build-devopskb-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-devopskb-dev/Jenkinsfile)
-- [jenkins_runapp_localdev.sh](https://github.com/y-kolyada/final-project-devops/blob/main/bash/jenkins_runapp_localdev.sh)
-- [jenkins_stopapp_localdev.sh](https://github.com/y-kolyada/final-project-devops/blob/main/bash/jenkins_stopapp_localdev.sh)
+- [jenkins_runapp_localdev.sh](https://github.com/y-kolyada/devopskb/blob/main/bash/jenkins_runapp_localdev.sh)
+- [jenkins_stopapp_localdev.sh](https://github.com/y-kolyada/devopskb/blob/main/bash/jenkins_stopapp_localdev.sh)
