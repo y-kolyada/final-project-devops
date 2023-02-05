@@ -1,0 +1,54 @@
+pipeline{
+    agent any
+    environment {
+        APP_RUN = 'java -jar devopskb.jar'
+        APP = 'devopskb'
+        PROJECT_PATH = '/home/devops/dev/devopskb'
+        MAIN_CLASS = 'link.kolyada.devops.devopskb.DevopskbApplication'
+        SSH_OPTIONS = 'StrictHostKeyChecking=off'
+    }
+    stages {
+        stage('Init') {
+            steps {
+                sh '''
+                    echo "--- ${JOB_NAME} ---"
+                    echo "JOB_START: $(date)"
+                    echo "DEVOPS_USER@DEV_HOST: ${DEVOPS_USER}@${DEV_HOST}"
+                    
+                    ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "hostnamectl"
+                    
+                    echo "Stopping app if running..."
+                    ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_stopapp_localdev.sh"
+                    
+                    ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}; mvn clean"
+                '''
+            }
+        }
+        stage('Build') {
+            steps {
+                sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}; mvn compile"'
+            }
+        }
+        stage('Test') {
+            steps {
+                sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}; mvn test"'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                sh '''
+                echo "Building package..."
+                ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}; mvn package"
+                
+                echo "Running builded app..."
+                ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_runapp_localdev.sh"
+                '''
+            }
+        }
+    }
+    post {
+        always {
+            sh 'echo "JOB_FINISH: $(date)"'
+        }
+    }
+}
