@@ -19,13 +19,7 @@
          git config --global user.name "Yakov Kolyada"
          git config --list
       register: git_config
-<<<<<<< HEAD
       when: git_installed.rc == 0
-=======
-      when: >
-        (git_installed.rc != 0) and
-        (ansible_facts['os_family'] == "RedHat")
->>>>>>> ac2b590 (ansible new config_git.yml)
 
     - name: Print git config facts Task
       ansible.builtin.debug:
