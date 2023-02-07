@@ -1,0 +1,28 @@
+---
+- name: Configure Git Playbook
+  vars_files:
+    - inventory/group_vars/infra  
+  hosts: "{{ host_or_group }}"
+  gather_facts: true
+  become: true
+  tasks:
+
+    - name: Fetch git version Task
+      ansible.builtin.shell: git --version
+      changed_when: false
+      register: git_installed
+      failed_when: false
+
+    - name: Configure git Task
+      ansible.builtin.shell: |
+         git config --global user.email "yakov.kolyada@gmail.com"
+         git config --global user.name "Yakov Kolyada"
+         git config --list
+      register: git_config
+      when: >
+        (git_installed.rc != 0) and
+        (ansible_facts['os_family'] == "RedHat")
+
+    - name: Print git config facts Task
+      ansible.builtin.debug:
+        var: git_config['stdout']        
