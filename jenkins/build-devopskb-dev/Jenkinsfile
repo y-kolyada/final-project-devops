@@ -17,8 +17,16 @@ pipeline{
                 expression { env.ENV == 'DEV' || env.EMV == 'QA' }
             }
             steps {
+                echo "Jenkins agent info:"
+                withCredentials([sshUserPrivateKey(credentialsId: 'devops-id-rsa', keyFileVariable: 'keyFile', passphraseVariable: 'passphrase', usernameVariable: 'username')]) {
+                       sh 'hostnamectl'
+                       sh 'df -Th /'
+                       
+                }
+                    
                 echo "--- ${JOB_NAME} ---"
                 sh 'echo "JOB_START: $(date)"'
+                
                 echo "ENV: ${ENV}"
                 script {
                     def host = ""

@@ -8,6 +8,7 @@
 - Environment Injector
 - Locale plugin
 - Publish Over SSH
+- Credentials Binding
 
 ### Configure System
 
