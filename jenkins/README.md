@@ -7,6 +7,10 @@
 - Locale plugin
 - Publish Over SSH
 
+## Jenkinsfiles on GitHub
+
+- [build-devopskb-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-devopskb-dev/Jenkinsfile)
+
 ## Devops Environment
 
 ### Vagrant Jobs
