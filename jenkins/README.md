@@ -1,11 +1,23 @@
 # Jenkins configuration
 
-## Installed plugins
+## Manage Jenkins
+
+### Installed Plugins
 
 - Default plugin set
 - Environment Injector
 - Locale plugin
 - Publish Over SSH
+
+### Configure System
+
+#### Global properties
+- BASH_PATH=devops/final-project-devops/bash
+- DEVOPS_USER=***
+- VG_HOST=h3.ygorod.com
+- VG_PATH=devops/final-project-devops/vagrant
+- VG_USER=***
+- DEV_HOST=dev.ygorod.com
 
 ## Jenkinsfiles on GitHub
 
