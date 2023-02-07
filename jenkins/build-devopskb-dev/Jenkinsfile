@@ -17,9 +17,9 @@ pipeline{
                 expression { env.ENV == 'DEV' || env.EMV == 'QA' }
             }
             steps {
-                echo '--- ${JOB_NAME} ---'
+                echo "--- ${JOB_NAME} ---"
                 sh 'echo "JOB_START: $(date)"'
-                echo 'ENV: ${ENV}'
+                echo "ENV: ${ENV}"
                 script {
                     def host = ""
                     if (env.ENV == "DEV") {
@@ -39,6 +39,9 @@ pipeline{
                             echo "DEVOPS_USER@HOST: ${DEVOPS_USER}@${HOST}"
                             
                             ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "hostnamectl"
+                            
+                            echo "Pull src from git..."
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; git pull"
                             
                             echo "Stopping app if running..."
                             ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_stopapp_localdev.sh"
