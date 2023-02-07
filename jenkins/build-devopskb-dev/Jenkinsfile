@@ -1,4 +1,4 @@
-// v1.0.0
+// ver 1.0.1
 
 pipeline{
     agent any
@@ -8,49 +8,112 @@ pipeline{
         PROJECT_PATH = '/home/devops/dev/devopskb'
         MAIN_CLASS = 'link.kolyada.devops.devopskb.DevopskbApplication'
         SSH_OPTIONS = 'StrictHostKeyChecking=off'
+        HOST = ""
     }
     stages {
+        
         stage('Init') {
+            when {
+                expression { env.ENV == 'DEV' || env.EMV == 'QA' }
+            }
             steps {
-                sh '''
-                    echo "--- ${JOB_NAME} ---"
-                    echo "JOB_START: $(date)"
-                    echo "DEVOPS_USER@DEV_HOST: ${DEVOPS_USER}@${DEV_HOST}"
-                    
-                    ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "hostnamectl"
-                    
-                    echo "Stopping app if running..."
-                    ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_stopapp_localdev.sh"
-                    
-                    ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}; mvn clean"
-                '''
+                echo '--- ${JOB_NAME} ---'
+                sh 'echo "JOB_START: $(date)"'
+                echo 'ENV: ${ENV}'
+                script {
+                    def host = ""
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else {
+                        echo "Please define value for ENV variable!"
+                        sh 'exit 1'
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh '''
+                            echo "DEVOPS_USER@HOST: ${DEVOPS_USER}@${HOST}"
+                            
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "hostnamectl"
+                            
+                            echo "Stopping app if running..."
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_stopapp_localdev.sh"
+                            
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn clean"
+                        '''
+                    }
+                }
             }
         }
+        
         stage('Build') {
             steps {
-                sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}; mvn compile"'
+                script {
+                    def host = ""
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn compile"'
+                    }
+                }
             }
         }
+        
         stage('Test') {
             steps {
-                sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}; mvn test"'
+                script {
+                    def host = ""
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn test"'
+                    }
+                }
             }
         }
+        
         stage('Deploy') {
             steps {
-                sh '''
-                echo "Building package..."
-                ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}; mvn package"
-                
-                echo "Running builded app..."
-                ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${DEV_HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_runapp_localdev.sh"
-                '''
+                script {
+                    def host = ""
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh '''
+                            echo "Building package..."
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn package"
+                            
+                            echo "Running builded app..."
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_runapp_localdev.sh"
+                        '''
+                    }
+                }
             }
-        }
-    }
-    post {
-        always {
-            sh 'echo "JOB_FINISH: $(date)"'
         }
     }
 }
