@@ -25,6 +25,7 @@
 - VG_PATH=devops/final-project-devops/vagrant
 - VG_USER=***
 - DEV_HOST=dev.ygorod.com
+- QA_HOST=qa.ygorod.com
 
 ## Jenkinsfiles on GitHub
 
