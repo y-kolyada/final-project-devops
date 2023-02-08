@@ -13,6 +13,7 @@
 ### Configure System
 
 #### Global properties
+- PROJECT_PATH=/home/devops/dev/devopskb
 - BASH_PATH=devops/final-project-devops/bash
 - DEVOPS_USER=***
 - VG_HOST=h3.ygorod.com
