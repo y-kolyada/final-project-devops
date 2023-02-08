@@ -13,6 +13,9 @@
 ### Configure System
 
 #### Global properties
+- APP=devopskb
+- APP_RUN="java -jar devopskb.jar"
+- MAIN_CLASS=link.kolyada.devops.devopskb.DevopskbApplication
 - PROJECT_PATH=/home/devops/dev/devopskb
 - BASH_PATH=devops/final-project-devops/bash
 - DEVOPS_USER=***
