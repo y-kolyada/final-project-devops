@@ -1,0 +1,34 @@
+---
+- name: Deploy Git Playbook
+  vars_files:
+    - inventory/group_vars/infra
+  vars:
+    host_or_group: terraform
+  hosts: "{{ host_or_group }}"
+  gather_facts: true
+  become: true
+  tasks:
+
+    - name: Check if git package is installed Task
+      command: dnf list git
+      register: installed_git
+      changed_when: installed_git.rc != 0
+
+    - name: Install Git Task
+      ansible.builtin.dnf:
+        name:
+          - git
+        state: latest
+      when: >
+        (ansible_facts['os_family'] == "RedHat") and
+        ("Installed" not in installed_git.stdout)
+    
+    - name: Fetch git version Task
+      ansible.builtin.shell: git -v
+      changed_when: false
+      register: git_version
+      failed_when: false
+    
+    - name: Print git facts Task
+      ansible.builtin.debug:
+        var: git_version['stdout']
