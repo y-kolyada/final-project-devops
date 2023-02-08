@@ -9,6 +9,7 @@
 - Locale plugin
 - Publish Over SSH
 - Credentials Binding
+- SSH Agent
 
 ### Configure System
 
