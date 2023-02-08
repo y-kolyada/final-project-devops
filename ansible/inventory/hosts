@@ -5,6 +5,7 @@ prod ansible_host=10.0.10.54 ansible_user=vagrant
 jenkins ansible_host=10.0.10.55 ansible_user=vagrant
 gitlab ansible_host=10.0.10.56 ansible_user=vagrant
 gitlab1 ansible_host=10.0.10.57 ansible_user=vagrant
+terraform ansible_host=10.0.10.58 ansible_user=vagrant
 dev001 ansible_host=10.0.10.61 ansible_user=vagrant
 
 [all]
@@ -15,6 +16,7 @@ prod
 jenkins
 gitlab
 gitlab1
+terraform
 dev001
 
 [integration]
@@ -29,6 +31,7 @@ prod
 jenkins
 gitlab
 gitlab1
+terraform
 
 [development]
 dev001
