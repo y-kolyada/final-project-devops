@@ -17,6 +17,7 @@
 - APP_RUN="java -jar devopskb.jar"
 - MAIN_CLASS=link.kolyada.devops.devopskb.DevopskbApplication
 - PROJECT_PATH=/home/devops/dev/devopskb
+- SSH_OPTIONS="StrictHostKeyChecking=off"
 - BASH_PATH=devops/final-project-devops/bash
 - DEVOPS_USER=***
 - VG_HOST=h3.ygorod.com
