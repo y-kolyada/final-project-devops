@@ -46,7 +46,7 @@ node {
     }
 
     stage('Update System') {
-        echo 'Update system...'
+        echo 'Update System...'
 
         sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
             vagrant provision ${envName} --provision-with=update_system'"
