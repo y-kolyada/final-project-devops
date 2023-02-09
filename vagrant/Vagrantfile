@@ -6,12 +6,15 @@
   Check: vagrant validate
 =end
 
+# Vagrantfile
+# ver 1.0.10
+# date: 2023-02-09
+
 ENV["VAGRANT_EXPERIMENTAL"] = "dependency_provisioners"
 ENV["VAGRANT_DOTFILE_PATH"] = ".vagrant"
 VAGRANT_VM_PROVIDER = "virtualbox"
 ANSIBLE_RAW_SSH_ARGS = []
 PRIVATE_KEY_PATH = []
-
 
 box = "centos/stream8"
 version = "20210210.0"
@@ -19,7 +22,8 @@ time_zone = "Europe/Kiev"
 
 ssh_key = "~/.ssh/id_rsa"
 
-ansible_playbook = "../ansible/playbook.yml"
+#ansible_playbook = "../ansible/playbook.yml"
+ansible_playbook = ""
 ansible_inventory_path = "../ansible/inventory/hosts"
 ansible_user = "vagrant"
 
