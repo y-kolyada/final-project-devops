@@ -1,0 +1,91 @@
+// vagrant-up-new
+// ver 1.0.0
+// date: 2022-02-09
+
+// Excluded provisioning scripts:
+//
+// resize_filesystem, never
+// set_server_multi_user_target, never
+
+node {
+    def u = env.VG_USER
+    def h = ""
+    def o = env.SSH_OPTIONS
+    def home = env.VG_PATH
+    def envName = ""
+
+    properties([
+        parameters([
+            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            description: 'Select the VM for "up". The first time "up" will create a new Vm.', name: 'ENV_NAME')
+        ])
+    ])
+    
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+
+        h = env.VG_HOST
+
+        // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
+        sh "ssh -o ${o} ${u}@${h} hostnamectl; df -Th /; uptime; \
+            last | grep '' -m3"
+
+        // envName = params.ENV_NAME
+        // echo "Parameter: ${envName}"
+
+        envName = params.ENV_NAME
+        echo "Parameter: ${envName}"
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant status ${envName}'"
+    }
+    
+    stage('Up VM') {
+        echo 'Up new VM...'
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant up ${envName}'"
+
+        // Provisioning scripts started automatically:
+        //
+        // sync_current_time, once
+        // remove_old_kernels, once
+        // check_new_kernel, always
+        // change_default_route
+        // install_python39
+        // set_alternatives
+        // set_timezone
+        // add_ssh_public_key_for_ansible, once
+        // get_current_default_kernel, always
+        // ansible_raw_ssh_args_for_servers, once
+        // mark_provisioning, always
+        
+        // Provisioning scripts did not start automatically:
+        //
+        // remove_old_kernels, once
+        // installed_new_kernel, once
+        // update_kernel, never
+        // resize_filesystem, never
+        // set_server_multi_user_target, never
+        // get_current_default_kernel, never
+        // update_system, never
+    }
+    
+    stage('Update System') {
+        echo 'Update System...'
+        
+        // Excluded provisioning scripts:
+        //
+        // resize_filesystem, never
+        // set_server_multi_user_target, never
+        
+        build job:'vagrant-update-system', parameters:[
+            string(name: 'ENV_NAME',value: "${envName}")
+        ], wait: true
+
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
