@@ -1,3 +1,0 @@
-vagrant/.vagrant/*
-ansible/inventory/group_vars/*
-*key*/*

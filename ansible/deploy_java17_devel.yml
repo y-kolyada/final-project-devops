@@ -1,0 +1,34 @@
+---
+- name: Deploy Java 17 Development Environment Playbook
+  vars_files:    
+    - inventory/group_vars/infra
+  vars:
+    java: java-17-openjdk-devel
+  hosts: "{{ host_or_group }}"
+  gather_facts: true
+  become: true
+  tasks:
+
+    - name: Check if {{ java }} Package is installed Task
+      command: dnf list {{ java }}
+      register: installed_java
+      changed_when: installed_java.rc != 0
+
+    - name: Install {{ java }} Package Task
+      ansible.builtin.dnf:
+        name:
+          - "{{ java }}"          
+        state: latest
+      when: >
+        (ansible_facts['os_family'] == "RedHat") and
+        ("Installed" not in installed_java.stdout)
+
+    - name: Fetch java version Task
+      ansible.builtin.shell: java -version
+      changed_when: False
+      register: java_result
+      failed_when: False
+  
+    - name: Print java facts Task
+      ansible.builtin.debug:
+        var: java_result
