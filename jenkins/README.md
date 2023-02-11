@@ -27,6 +27,7 @@
 - VG_USER=***
 - VG_DEFAUTL_USER=***
 - ANSIBLE_HOST=ansible.ygorod.com
+- ANSIBLE_PATH=devops/final-project-devops/ansible
 - DEV_HOST=dev.ygorod.com
 - QA_HOST=qa.ygorod.com
 
