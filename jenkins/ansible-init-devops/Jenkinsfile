@@ -1,0 +1,70 @@
+// ansible-init-devops
+// ver 1.0.0
+// date: 2022-02-11
+
+// TO DO:
+// - Automatically configure git config for the user
+
+node {
+    def u = env.DEVOPS_USER
+    def h = env.ANSIBLE_HOST
+    def o = env.SSH_OPTIONS
+    def home = env.ANSIBLE_PATH
+    def devops_home = env.DEVOPS_PROJECT_PATH
+    def envName = ""
+
+    properties([
+        parameters([
+            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            description: 'Select a VM to initialize the DevOps environment.', name: 'ENV_NAME')
+        ])
+    ])
+    
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+        
+        echo "ANSIBLE_HOST: ${h}"
+        
+        envName = params.ENV_NAME
+
+        // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
+        sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+    }
+    
+    stage('Clone git') {
+        echo 'Clone git...'
+        
+        sh "ssh -o ${o} ${u}@${h} 'mkdir -p ${u}; cd ${u}; \
+            [ ! -d final-project-devops ] && ssh-keyscan github.com >> ~/.ssh/known_hosts; \
+            [ ! -d final-project-devops ] && git clone git@github.com:y-kolyada/final-project-devops.git; \
+            [ -d final-project-devops ] && echo \"devops project cloned...\"' \
+        "
+    }
+    
+    stage('Configure git') {
+        echo 'Configure git...'
+ 
+        // TO DO:
+        // - Automatically configure git config for the user
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            ansible-playbook config_git.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'git configured...'
+    }
+    
+    stage('Pull git') {
+        echo 'Pull git...'
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            git pull' \
+        "
+        echo 'git pulled...'
+        
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
