@@ -1,5 +1,5 @@
 // ansible-init-agent
-// ver 1.0.0
+// ver 1.0.1
 // date: 2022-02-11
 
 // Prerequisites:
@@ -10,7 +10,6 @@
 // - Remove key operations into Key Deployment Center
 
 // It is supposed that Ansible will be installed on the Jenkins agent
-
 
 node {
     def u = env.VG_USER
@@ -23,7 +22,7 @@ node {
     properties([
         parameters([
             choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
-            description: 'Select a VM to install Ansible on the Jenkins agent.', name: 'ENV_NAME')
+            description: 'Select a VM to install Ansible and Git on the Jenkins agent.', name: 'ENV_NAME')
         ])
     ])
     
@@ -89,6 +88,15 @@ node {
             python3 -m pip install ansible; \
             ansible --version' \
         "
+    }
+    
+    stage('Install Git') {
+        echo 'Install Git...'
+        
+        u = env.DEVOPS_USER
+        h = env.ANSIBLE_HOST
+        
+        sh "ssh -o ${o} ${u}@${h} 'sudo dnf install -y git'"
         sh 'echo "JOB_FINISH: $(date)"'
     }
 }
