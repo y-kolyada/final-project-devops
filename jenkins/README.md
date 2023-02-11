@@ -26,8 +26,8 @@
 - VG_PATH=devops/final-project-devops/vagrant
 - VG_USER=***
 - VG_DEFAUTL_USER=***
-- ANSIBLE_HOST=ansible.ygorod.com
 - DEV_HOST=dev.ygorod.com
+- ANSIBLE_HOST=ansible.ygorod.com
 - QA_HOST=qa.ygorod.com
 
 ## Jenkinsfiles on GitHub
