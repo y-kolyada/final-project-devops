@@ -30,7 +30,6 @@
 - ANSIBLE_HOST=ansible.ygorod.com
 - QA_HOST=qa.ygorod.com
 
-
 ## Jenkinsfiles on GitHub
 
 - [build-devopskb-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-devopskb-dev/Jenkinsfile)
