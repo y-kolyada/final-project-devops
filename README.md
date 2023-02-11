@@ -18,3 +18,7 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 1. [Red Hat build of OpenJDK 17](https://developers.redhat.com/products/openjdk/download)
 2. [Java source code](https://github.com/y-kolyada/devopskb/tree/main/src/main)
 3. [Maven](https://github.com/y-kolyada/devopskb/blob/main/pom.xml)
+
+## TO DO (future improvements)
+
+1. Make Key Deployment Center
