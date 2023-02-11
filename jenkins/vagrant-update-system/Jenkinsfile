@@ -1,6 +1,6 @@
 // vagrant-update-system
-// ver 1.0.1
-// date: 2022-02-09
+// ver 1.0.2
+// date: 2022-02-11
 
 node {
     def u = env.VG_USER
@@ -12,7 +12,7 @@ node {
     properties([
         parameters([
             choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
-            description: 'Select the VM for "up". The first time "up" will create a new Vm.', name: 'ENV_NAME')
+            description: 'Select the VM to update the System.', name: 'ENV_NAME')
         ])
     ])
 
@@ -46,7 +46,7 @@ node {
     }
 
     stage('Update System') {
-        echo 'Update System...'
+        echo 'Update system...'
 
         sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
             vagrant provision ${envName} --provision-with=update_system'"
