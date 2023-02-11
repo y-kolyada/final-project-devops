@@ -1,0 +1,69 @@
+// vagrant-update-kernel
+// ver 1.0.0
+// date: 2022-02-09
+
+node {
+    def u = env.VG_USER
+    def h = ""
+    def o = env.SSH_OPTIONS
+    def home = env.VG_PATH
+    def envName = ""
+
+    properties([
+        parameters([
+            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            description: 'Select the VM for "up". The first time "up" will create a new Vm.', name: 'ENV_NAME')
+        ])
+    ])
+    
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+        
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+        
+        h = env.VG_HOST
+        
+        // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
+        sh "ssh -o ${o} ${u}@${h} hostnamectl; df -Th /; uptime; \
+            last | grep '' -m3"
+            
+        // envName = params.ENV_NAME
+        // echo "Parameter: ${envName}"
+        
+        envName = params.ENV_NAME
+        echo "Parameter: ${envName}"
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant status ${envName}'"
+    }
+    
+    stage('Up VM') {
+        echo 'Up VM...'
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant up ${envName} --no-provision'"
+    }
+    
+    stage('Update kernel') {
+        echo 'Update kernel...'
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant provision ${envName} --provision-with=update_kernel'"
+    }
+    
+    stage('Reboot VM') {
+        echo 'Reboot VM...'
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant halt ${envName}'"
+            
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant up ${envName}'"
+            
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant provision ${envName} --provision-with=remove_old_kernels'"
+        
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}

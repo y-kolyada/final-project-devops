@@ -37,6 +37,7 @@
 - [vagrant-up-new](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-new/Jenkinsfile)
 - [vagrant-update-system](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-system/Jenkinsfile)
 
+
 ## Devops Environment
 
 ### Vagrant Jobs
