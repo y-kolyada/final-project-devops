@@ -25,15 +25,16 @@
 - VG_HOST=h3.ygorod.com
 - VG_PATH=devops/final-project-devops/vagrant
 - VG_USER=***
-- DEV_HOST=dev.ygorod.com
 - ANSIBLE_HOST=ansible.ygorod.com
+- DEV_HOST=dev.ygorod.com
 - QA_HOST=qa.ygorod.com
 
 ## Jenkinsfiles on GitHub
 
-- [build-devopskb-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-devopskb-dev/Jenkinsfile), declarative
-- [vagrant-up-new](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-new/Jenkinsfile), declarative
-- [vagrant-update-system](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-system/Jenkinsfile), scripted
+- [build-devopskb-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-devopskb-dev/Jenkinsfile)
+- [vagrant-up-new](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-new/Jenkinsfile)
+- [vagrant-update-system](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-system/Jenkinsfile)
+- [vagrant-update-kernel](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-kernel/Jenkinsfile)
 
 ## Devops Environment
 
