@@ -97,6 +97,7 @@ node {
         h = env.ANSIBLE_HOST
         
         sh "ssh -o ${o} ${u}@${h} 'sudo dnf install -y git'"
+        
         sh 'echo "JOB_FINISH: $(date)"'
     }
 }

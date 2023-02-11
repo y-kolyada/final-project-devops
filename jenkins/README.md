@@ -38,6 +38,7 @@
 - [vagrant-update-system](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-system/Jenkinsfile)
 - [vagrant-update-kernel](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-kernel/Jenkinsfile)
 - [ansible-init-agent](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-agent/Jenkinsfile), see TO DO 1
+- [ansible-init-devops](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-devops/Jenkinsfile), see TO DO 2
 
 
 ## Devops Environment
@@ -64,3 +65,4 @@
 ## TO DO
 
 1. Remove key operations into Key Deployment Center
+2. Automatically configure git config for the user
