@@ -18,15 +18,18 @@
 - APP_RUN="java -jar devopskb.jar"
 - MAIN_CLASS=link.kolyada.devops.devopskb.DevopskbApplication
 - PROJECT_PATH=/home/devops/dev/devopskb
+- DEVOPS_PROJECT_PATH=/home/devops/devops/final-project-devops
 - SSH_OPTIONS="StrictHostKeyChecking=off"
 - BASH_PATH=devops/final-project-devops/bash
 - DEVOPS_USER=***
 - VG_HOST=h3.ygorod.com
 - VG_PATH=devops/final-project-devops/vagrant
 - VG_USER=***
-- VG_DEFAUTL_USER=
+- VG_DEFAUTL_USER=***
 - DEV_HOST=dev.ygorod.com
 - ANSIBLE_HOST=ansible.ygorod.com
+- QA_HOST=qa.ygorod.com
+
 
 ## Jenkinsfiles on GitHub
 
