@@ -1,0 +1,94 @@
+// ansible-init-agent
+// ver 1.0.0
+// date: 2022-02-11
+
+// Prerequisites:
+// - Ansible VM shoud be created and updated, use vagrant-update-system
+// - first time start should be done from host with Absible (e.g. VG_HOST)
+//
+// TO DO:
+// - Remove key operations into Key Deployment Center
+
+// It is supposed that Ansible will be installed on the Jenkins agent
+
+
+node {
+    def u = env.VG_USER
+    def h = ""
+    def o = env.SSH_OPTIONS
+    def home = env.VG_PATH
+    def envName = ""
+    def agent = ""
+
+    properties([
+        parameters([
+            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            description: 'Select a VM to install Ansible on the Jenkins agent.', name: 'ENV_NAME')
+        ])
+    ])
+    
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+
+        // Prerequisites:
+        // - first time start should be done from host with Absible (e.g. VG_HOST)
+        
+        h = env.VG_HOST
+
+        // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
+        sh "ssh -o ${o} ${u}@${h} hostnamectl; df -Th /; uptime; \
+            last | grep '' -m3"
+
+        envName = params.ENV_NAME
+        echo "Parameter: ${envName}"
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant status ${envName}'"
+    }
+    
+    stage('Up VM') {
+        echo 'Up VM...'
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant up ${envName}'"
+    }
+
+    stage('Create devops') {
+        echo 'Create devops...'
+        
+        home = env.ANSIBLE_PATH
+        agent = env.ANSIBLE_HOST
+        
+        echo "ANSIBLE_HOST: ${agent}"
+        
+        // TO DO:
+        // - Remove key operations into Key Deployment Center
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            ansible-playbook create_devops_user.yml -e \"host_or_group=${envName}\"; \
+            echo \"User created...\"; \
+            scp -o ${o} ~/.ssh/devops_id_rsa devops@${agent}:.ssh/id_rsa; \
+            scp -o ${o} ~/.ssh/devops_id_rsa.pub devops@${agent}:~/.ssh/id_rsa.pub; \
+            echo \"Keys copied...\"' \
+        "
+    }
+
+    stage('Install Ansible') {
+        echo 'Install Ansible...'
+        
+        u = env.DEVOPS_USER
+        h = env.ANSIBLE_HOST
+        
+        sh "ssh -o ${o} ${u}@${h} ' \
+            sudo dnf install -y epel-release; \
+            python3 -m ensurepip --default-pip; \
+            python3 -m pip install --upgrade pip setuptools wheel; \
+            python3 -m pip install ansible; \
+            ansible --version' \
+        "
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
