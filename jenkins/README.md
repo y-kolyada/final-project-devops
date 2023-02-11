@@ -39,7 +39,6 @@
 - [vagrant-update-kernel](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-kernel/Jenkinsfile)
 
 
-
 ## Devops Environment
 
 ### Vagrant Jobs
