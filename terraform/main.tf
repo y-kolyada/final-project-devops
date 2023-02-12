@@ -18,6 +18,15 @@ resource "aws_instance" "web-04" {
   instance_type = "t2.micro"
   key_name      = "aws-web"
   vpc_security_group_ids  = [aws_security_group.allow_webapp.id]
+  # user_data     = file("init-script.sh")
+
+user_data = <<-EOL
+  #!/bin/bash -xe
+  sudo dnf install -y epel-release
+  sudo dnf install -y python39
+  python3 -m ensurepip --upgrade --default-pip
+  pip3 install --upgrade pip
+EOL
 
   tags = {
     Name = var.instance_name
@@ -66,7 +75,7 @@ resource "aws_security_group" "allow_webapp" {
   egress {
     from_port       = 0
     to_port         = 0
-    protocol        = "tcp"
+    protocol        = -1
     cidr_blocks     = ["0.0.0.0/0"]
   }
 }
