@@ -1,0 +1,74 @@
+---
+- name: Deploy AWS CLI Playbook
+  vars_files:
+    - inventory/group_vars/infra
+  vars:
+    download_url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+  hosts: "{{ host_or_group }}"
+  gather_facts: true
+  become: true
+  tasks:
+
+    - name: Check if curl Package is installed Task
+      command: dnf list curl
+      register: installed_curl
+      changed_when: installed_curl.rc != 0
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: Install curl Package Task
+      ansible.builtin.dnf:
+        name:
+          - curl
+        state: latest
+      when: > 
+        ('"Installed" not in installed_curl.stdout') and
+        (ansible_facts['os_family'] == "RedHat")        
+
+    - name: Check if zip Package is installed Task
+      command: dnf list zip
+      register: installed_zip
+      changed_when: installed_zip.rc != 0
+      when: ansible_facts['os_family'] == "RedHat"
+
+    - name: Install zip Package Task
+      ansible.builtin.dnf:
+        name:
+          - zip
+        state: latest
+      when: >
+        ('"Installed" not in installed_zip.stdout') and
+        (ansible_facts['os_family'] == "RedHat")
+
+    - name: Check if aws cli is installed Task
+      ansible.builtin.command: /usr/local/bin/aws --version
+      register: installed_aws
+      ignore_errors: true
+      changed_when: '"aws-cli" not in installed_aws.stdout'
+    
+    - name: Print aws cli version facts Task
+      ansible.builtin.debug:
+        var: installed_aws['stdout']
+
+    - name: Install aws cli Task
+      ansible.builtin.shell: |
+        curl -s "{{ download_url }}" -o awscliv2.zip
+        unzip -u awscliv2.zip
+        sudo ./aws/install
+      register: aws_install
+      when: installed_aws.rc != 0
+
+    - name: Print aws cli installation facts Task
+      ansible.builtin.debug:
+        var: aws_install['stdout']
+      when: >
+        (installed_aws.rc == 0)
+
+    - name: Get aws cli facts Task
+      ansible.builtin.shell: /usr/local/bin/aws --version
+      register: aws_info
+      ignore_errors: true
+      changed_when: '"aws-cli" not in aws_info.stdout'
+
+    - name: Print aws cli facts Task
+      ansible.builtin.debug:
+        var: aws_info['stdout']
