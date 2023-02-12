@@ -18,7 +18,7 @@ resource "aws_instance" "web-04" {
   instance_type = "t2.micro"
   key_name      = "aws-web"
   vpc_security_group_ids  = [aws_security_group.allow_webapp.id]
-  # user_data     = file("init-script.sh")
+  # user_data     = file("init_script.sh")
 
 user_data = <<-EOL
   #!/bin/bash -xe
