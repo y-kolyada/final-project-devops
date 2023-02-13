@@ -8,3 +8,5 @@ ansible/inventory/group_vars/*
 **/terraform.tfstate.backup
 
 bin/*
+**/variables.tf
+
