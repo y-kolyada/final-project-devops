@@ -4,7 +4,9 @@
     - inventory/group_vars/infra  
   hosts: "{{ host_or_group }}"
   gather_facts: true
-  become: true
+  become: false
+  remote_user: devops
+  become_user: devops
   tasks:
 
     - name: Fetch git version Task
@@ -18,6 +20,8 @@
          git config --global user.email "yakov.kolyada@gmail.com"
          git config --global user.name "Yakov Kolyada"
          git config --list
+      become: false
+      remote_user: devops
       register: git_config
       when: git_installed.rc == 0
 
