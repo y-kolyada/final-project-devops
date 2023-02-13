@@ -4,5 +4,6 @@
 # updated: 2023-02-14
 
 cd $FINAL_PROJECT_DEVOPS_HOME/terraform
-vagrant up dev qa
-vagrant status
+aws_host=$(cat ./prod_public_ip)
+
+echo $aws_host
