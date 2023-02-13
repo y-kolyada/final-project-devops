@@ -17,7 +17,7 @@ resource "aws_instance" "prod-devopskb" {
   ami           = "ami-01cf633da373ae6f3"
   instance_type = "t2.micro"
   key_name      = "aws-web"
-  vpc_security_group_ids  = [aws_security_group.prod-devopskb.id]
+  vpc_security_group_ids  = [aws_security_group.sec-group-prod-devopskb.id]
   # user_data     = file("init_script.sh")
 
 # user_data = <<-EOL
@@ -74,11 +74,11 @@ resource "aws_instance" "prod-devopskb" {
   }
 }
 
-resource "aws_security_group" "prod-devopskb" {
-  name        = "sec-group-${var.prod_name}"
+resource "aws_security_group" "sec-group-prod-devopskb" {
+  name        = "sec-group-prod-devopskb}"
   description = "Allow inbound traffic"
   tags = {
-    Name = "prod webapp ${var.prod_name} sec-group"
+    Name = "prod prod-devopskb sec-group"
   }
   ingress {
     from_port   = 443
