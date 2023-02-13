@@ -1,3 +1,11 @@
 vagrant/.vagrant/*
 ansible/inventory/group_vars/*
 *key*/*
+
+**/.terraform.lock.hcl
+**/.terraform/
+**/terraform.tfstate
+**/terraform.tfstate.backup
+
+/bin/*
+**/variables.tf
