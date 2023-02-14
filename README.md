@@ -4,6 +4,10 @@ Developed by : [Yakov Kolyada](https://github.com/y-kolyada)
 
 Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 
+## Results
+1. [DevOps folder of the project](https://github.com/y-kolyada/final-project-devops)
+2. [Application "devopskb" folder of the project](https://github.com/y-kolyada/devopskb)
+
 ## Software Vendors
 1. [CentOS Stream 8, GNU GPL](https://www.centos.org/centos-stream/)
 2. [Vagrant 2.3.4, MIT](https://developer.hashicorp.com/vagrant/downloads)
