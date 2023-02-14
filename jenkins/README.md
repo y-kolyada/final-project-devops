@@ -30,6 +30,8 @@
 - ANSIBLE_PATH=devops/final-project-devops/ansible
 - DEV_HOST=dev.ygorod.com
 - QA_HOST=qa.ygorod.com
+- TERRAFORM_HOST=terraform.ygorod.com
+- TERRAFORM_PATH=devops/final-project-devops/terraform
 
 ## Jenkinsfiles on GitHub
 
