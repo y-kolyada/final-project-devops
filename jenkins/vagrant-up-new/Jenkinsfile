@@ -19,7 +19,7 @@ node("vagrant") {
 
     properties([
         parameters([
-            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
             description: 'Select the VM for "up". The first time "up" will create a new VM.', name: 'ENV_NAME')
         ])
     ])

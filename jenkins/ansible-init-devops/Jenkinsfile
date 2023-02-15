@@ -1,11 +1,11 @@
 // ansible-init-devops
-// ver 1.0.0
-// date: 2022-02-11
+// ver 1.0.2
+// date: 2022-02-15
 
 // TO DO:
 // - Automatically configure git config for the user
 
-node {
+node("vagrant") {
     def u = env.DEVOPS_USER
     def h = env.ANSIBLE_HOST
     def o = env.SSH_OPTIONS
@@ -15,7 +15,7 @@ node {
 
     properties([
         parameters([
-            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
             description: 'Select a VM to initialize the DevOps environment.', name: 'ENV_NAME')
         ])
     ])
@@ -33,6 +33,15 @@ node {
 
         // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
         sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+    }
+    
+    stage('Configure network') {
+        echo 'Configure network...'
+ 
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            ansible-playbook config_network.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'network configured...'
     }
     
     stage('Clone git') {

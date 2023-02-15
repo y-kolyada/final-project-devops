@@ -12,7 +12,7 @@ node("vagrant") {
     
     properties([
         parameters([
-            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
             description: 'Select the VM to update the System.', name: 'ENV_NAME')
         ])
     ])

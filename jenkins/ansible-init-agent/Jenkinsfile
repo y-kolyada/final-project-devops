@@ -1,6 +1,6 @@
 // ansible-init-agent
-// ver 1.0.1
-// date: 2022-02-11
+// ver 1.0.2
+// date: 2022-02-15
 
 // Prerequisites:
 // - Ansible VM shoud be created and updated, use vagrant-update-system
@@ -11,7 +11,7 @@
 
 // It is supposed that Ansible will be installed on the Jenkins agent
 
-node {
+node("vagrant") {
     def u = env.VG_USER
     def h = ""
     def o = env.SSH_OPTIONS
@@ -21,7 +21,7 @@ node {
 
     properties([
         parameters([
-            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
             description: 'Select a VM to install Ansible and Git on the Jenkins agent.', name: 'ENV_NAME')
         ])
     ])
