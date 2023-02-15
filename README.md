@@ -1,4 +1,4 @@
-# Final Project L1 2022
+# CI/CD prototype Final Project L1
 
 Developed by : [Yakov Kolyada](https://github.com/y-kolyada)
 
@@ -8,6 +8,19 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 1. [DevOps folder of the project](https://github.com/y-kolyada/final-project-devops)
 2. [Application "devopskb" folder of the project](https://github.com/y-kolyada/devopskb)
 
+## Environment
+
+### Hardware resources
+| Location | Type         | Virtualization | Name          | CPU                        | RAM   | HDD   | Architecture | FS Type  |
+|:---------|:------------:|:--------------:|:--------------|:--------------------------:|:-----:|:-----:|:------------:|:--------:|
+| local    | ITX desktop  | AMD-V          | h3            | AMD Ryzen 5 PRO 2400GE x4  | 64GB  | 1TB   | x86_64       | xfs      |
+| local    | VirtualBox   | oracle         | jenkins       | vCPU x2 AuthenticAMD       | 3GB   | 12GB  | x86_64       | xfs      |
+| local    | VirtualBox   | oracle         | terraform     | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | x86_64       | xfs      |
+| local    | VirtualBox   | oracle         | dev           | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | x86_64       | xfs      |
+| aws      | ec2          | xen            | prod-devopskb | vCPU x1 GenuineIntel       | 1GB   | 10GB  | x86_64       | xfs      |
+|          |              |                |               |                            |       |       |              |          |
+
+## Vendors
 ## Software Vendors
 1. [CentOS Stream 8, GNU GPL](https://www.centos.org/centos-stream/)
 2. [Vagrant 2.3.4, MIT](https://developer.hashicorp.com/vagrant/downloads)
