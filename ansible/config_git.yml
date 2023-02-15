@@ -2,6 +2,8 @@
 - name: Configure Git Playbook
   vars_files:
     - inventory/group_vars/infra  
+  vars:
+    ansible_user: devops
   hosts: "{{ host_or_group }}"
   gather_facts: true
   become: false
@@ -21,9 +23,16 @@
          git config --global user.name "Yakov Kolyada"
          git config --list
       become: false
-      remote_user: devops
       register: git_config
       when: git_installed.rc == 0
+
+#    - name: Create .gitconfig Task
+#      ansible.builtin.copy:
+#        content: |-
+#          [user]
+#            user.email "yakov.kolyada@gmail.com"
+#            user.name "Yakov Kolyada"
+#        dest: ~/.gitconfig
 
     - name: Print git config facts Task
       ansible.builtin.debug:
