@@ -1,6 +1,6 @@
 // vagrant-up-new
-// ver 1.0.1
-// date: 2022-02-11
+// ver 1.0.2
+// date: 2022-02-15
 
 // Prerequisites:
 // - vagrant-update-system job
@@ -10,7 +10,7 @@
 // resize_filesystem, never
 // set_server_multi_user_target, never
 
-node {
+node("vagrant") {
     def u = env.VG_USER
     def h = ""
     def o = env.SSH_OPTIONS
@@ -19,7 +19,7 @@ node {
 
     properties([
         parameters([
-            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
             description: 'Select the VM for "up". The first time "up" will create a new VM.', name: 'ENV_NAME')
         ])
     ])

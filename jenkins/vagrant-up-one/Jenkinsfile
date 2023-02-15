@@ -1,5 +1,5 @@
-// vagrant-update-system
-// ver 1.0.3
+// vagrant-up-one
+// ver 1.0.0
 // date: 2022-02-15
 
 node("vagrant") {
@@ -13,7 +13,7 @@ node("vagrant") {
     properties([
         parameters([
             choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
-            description: 'Select the VM to update the System.', name: 'ENV_NAME')
+            description: 'Select the VM to start.', name: 'ENV_NAME')
         ])
     ])
     
@@ -26,12 +26,8 @@ node("vagrant") {
 
         h = env.VG_HOST
 
-        // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
         sh "ssh -o ${o} ${u}@${h} hostnamectl; df -Th /; uptime; \
             last | grep '' -m3"
-
-        // envName = params.ENV_NAME
-        // echo "Parameter: ${envName}"
 
         envName = params.ENV_NAME
         echo "Parameter: ${envName}"
@@ -44,14 +40,5 @@ node("vagrant") {
 
         sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
             vagrant up ${envName}'"
-    }
-
-    stage('Update System') {
-        echo 'Update system...'
-
-        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
-            vagrant provision ${envName} --provision-with=update_system'"
-
-        sh 'echo "JOB_FINISH: $(date)"'
     }
 }

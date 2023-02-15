@@ -1,0 +1,31 @@
+// vagrant-status-all
+// ver 1.0.1
+// date: 2022-02-15
+
+node("vagrant") {
+
+    def u = env.VG_USER
+    def h = ""
+    def o = env.SSH_OPTIONS
+    def home = env.VG_PATH
+    
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+
+        h = env.VG_HOST
+
+        sh "ssh -o ${o} ${u}@${h} hostnamectl; df -Th /; uptime; \
+            last | grep '' -m3"
+    }
+
+    stage('VMs Status') {
+        echo 'VMs Status...'
+
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant status'"
+    }
+}
