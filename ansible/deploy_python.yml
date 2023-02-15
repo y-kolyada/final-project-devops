@@ -1,0 +1,38 @@
+---
+- name: Deploy Python3 Playbook
+  vars_files:
+    - inventory/group_vars/all
+  hosts: "{{ host_or_group }}"
+  gather_facts: true
+  become: true
+  tasks:
+
+    - name: Fetch python version Task
+      ansible.builtin.shell: python --version
+      changed_when: false
+      register: python_installed
+      failed_when: false
+
+    - name: Install python package Task
+      ansible.builtin.dnf:
+        name:
+          - epel-release
+          - python3
+        update_cache: true
+        state: latest
+      when: >
+        (python_installed.rc != 0) and
+        (ansible_facts['os_family'] == "RedHat")
+
+    - name: Upgrade pip Task
+      ansible.builtin.shell: |        
+        python3 -m ensurepip --upgrade --default-pip
+        pip3 install --upgrade pip
+      become: false
+      when: >
+        (python_installed.rc != 0) and
+        (ansible_facts['os_family'] == "RedHat")
+
+    - name: Print python facts Task
+      ansible.builtin.debug:
+        var: python_installed['stdout']
