@@ -1,0 +1,30 @@
+---
+- name: Deploy Ansible Playbook
+  vars_files:
+    - inventory/group_vars/infra
+  hosts: "{{ host_or_group }}"
+  gather_facts: true
+  become: true
+  tasks:
+
+    - name: Fetch ansible version Task
+      ansible.builtin.shell: ansible --version
+      changed_when: false
+      register: ansible_installed
+      failed_when: false
+
+    - name: Install ansible Task
+      ansible.builtin.shell: |
+        python3 -m pip install ansible
+      when: ansible_installed.rc != 0
+     
+    - name: Fetch ansible version Task
+      ansible.builtin.shell: ansible --version
+      changed_when: false
+      become: false
+      register: installed_ansible
+      failed_when: false
+
+    - name: Print ansible facts Task
+      ansible.builtin.debug:
+        var: installed_ansible['stdout']
