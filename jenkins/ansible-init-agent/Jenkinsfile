@@ -1,19 +1,20 @@
 // ansible-init-agent
-// ver 1.0.2
+// ver 1.0.4
 // date: 2022-02-15
 
 // Prerequisites:
-// - Ansible VM shoud be created and updated, use vagrant-update-system
+// - Vagrant checks that the VM is running
 // - first time start should be done from host with Absible (e.g. VG_HOST)
+// - Ansible VM shoud be created and updated, use vagrant-update-system
 //
 // TO DO:
 // - Remove key operations into Key Deployment Center
 
 // It is supposed that Ansible will be installed on the Jenkins agent
 
-node("vagrant") {
+node("ansible") {
     def u = env.VG_USER
-    def h = ""
+    def h = env.VG_HOST
     def o = env.SSH_OPTIONS
     def home = env.VG_PATH
     def envName = ""
@@ -32,71 +33,85 @@ node("vagrant") {
 
         echo "DEVOPS_USER: ${u}"
         echo "HOST: ${h}"
+        echo "PATH: ${home}"
 
         // Prerequisites:
         // - first time start should be done from host with Absible (e.g. VG_HOST)
         
-        h = env.VG_HOST
+        sh "ssh -o ${o} ${u}@${h} 'hostnamectl; df -Th /; uptime; \
+            last | grep \"\" -m3' \
+        "
 
-        // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
-        sh "ssh -o ${o} ${u}@${h} hostnamectl; df -Th /; uptime; \
-            last | grep '' -m3"
-
-        envName = params.ENV_NAME
+        envName = params.ENV_NAME        
+        agent = params.ENV_NAME
         echo "Parameter: ${envName}"
-        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+        echo "agent: ${agent}"  
+
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; \
             vagrant status ${envName}'"
     }
-    
-    stage('Up VM') {
-        echo 'Up VM...'
-        
-        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
-            vagrant up ${envName}'"
-    }
 
-    stage('Create devops') {
-        echo 'Create devops...'
+    stage('Configure network') {
+        echo 'Configure network...'
+        
+        u = env.DEVOPS_USER
+        h = env.ANSIBLE_HOST
+        home = env.ANSIBLE_PATH
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+        echo "PATH: ${home}"
         
         home = env.ANSIBLE_PATH
-        agent = env.ANSIBLE_HOST
-        
-        echo "ANSIBLE_HOST: ${agent}"
-        
+        echo "ANSIBLE_PATH: ${home}"
+
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
+            ansible-playbook config_network.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'network configured...'
+    }
+
+    stage('Add devops user') {
+        echo 'Add devops user...'
+
         // TO DO:
         // - Remove key operations into Key Deployment Center
-        
-        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
-            ansible-playbook create_devops_user.yml -e \"host_or_group=${envName}\"; \
-            echo \"User created...\"; \
+
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
+            ansible-playbook create_devops_user.yml -e \"host_or_group=${envName}\" &>/dev/null; \
+            [ \$? ] && echo \"user created...\"; \
             scp -o ${o} ~/.ssh/devops_id_rsa devops@${agent}:.ssh/id_rsa; \
             scp -o ${o} ~/.ssh/devops_id_rsa.pub devops@${agent}:~/.ssh/id_rsa.pub; \
-            echo \"Keys copied...\"' \
+            [ \$? ] && echo \"keys copied...\"' \
         "
+        echo 'devops user added...'
+    }
+    
+    stage('Install Python') {
+        echo 'Install Python...'
+
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
+            ansible-playbook deploy_python.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'python installed...'
     }
 
     stage('Install Ansible') {
         echo 'Install Ansible...'
         
-        u = env.DEVOPS_USER
-        h = env.ANSIBLE_HOST
-        
-        sh "ssh -o ${o} ${u}@${h} ' \
-            sudo dnf install -y epel-release; \
-            python3 -m ensurepip --default-pip; \
-            python3 -m pip install --upgrade pip setuptools wheel; \
-            python3 -m pip install ansible; \
-            ansible --version' \
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
+            ansible-playbook deploy_ansible.yml -e \"host_or_group=${envName}\"' \
         "
+        echo 'ansible installed...'
     }
-    
+
     stage('Install Git') {
         echo 'Install Git...'
         
-        u = env.DEVOPS_USER
-        h = env.ANSIBLE_HOST
-        
-        sh "ssh -o ${o} ${u}@${h} 'sudo dnf install -y git'"
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
+            ansible-playbook deploy_git.yml -e \"host_or_group=${envName}\"; \
+            ansible-playbook config_git.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'git installed...'
         
         sh 'echo "JOB_FINISH: $(date)"'
     }
