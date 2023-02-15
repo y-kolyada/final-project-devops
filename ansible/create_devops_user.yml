@@ -19,14 +19,13 @@
         expires: -1
       loop: "{{ devops_users }}"
 
-    - name: Install SSH Key for devops 1 Users Task
+    - name: Install SSH Key for devop Users Task
       ansible.posix.authorized_key:        
         user: devops
         state: present
         manage_dir: true
         key: "{{ item }}"
       with_file:
-        - ~/{{ devops_project_path }}/public_keys/devops_id_rsa.pub
         - ~/.ssh/id_rsa.pub
 
     - name: Setup DevOps Sudo Access
