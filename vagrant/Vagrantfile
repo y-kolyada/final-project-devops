@@ -56,7 +56,7 @@ servers = [
 
 devs = [
   { :hostname => "dev001", :box => "centos/stream8", :version => "20210210.0", 
-    :ram => 3072, :cpu => 2, :host_port => 22261, :guest_ip => "10.0.10.61",
+    :ram => 4096, :cpu => 2, :host_port => 22261, :guest_ip => "10.0.10.61",
     :group => "development" }
 ]
 
