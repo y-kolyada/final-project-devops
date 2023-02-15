@@ -1,6 +1,6 @@
 // vagrant-up-new
-// ver 1.0.1
-// date: 2022-02-11
+// ver 1.0.2
+// date: 2022-02-15
 
 // Prerequisites:
 // - vagrant-update-system job
@@ -10,7 +10,7 @@
 // resize_filesystem, never
 // set_server_multi_user_target, never
 
-node {
+node("vagrant") {
     def u = env.VG_USER
     def h = ""
     def o = env.SSH_OPTIONS
