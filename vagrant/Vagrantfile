@@ -78,6 +78,7 @@ add_ssh_public_key_for_ansible = <<-SHELL
   umask 077 
   test -d ~/.ssh || mkdir .ssh
   cat ~/.ssh/id_rsa.pub >> .ssh/authorized_keys
+  cat ~/.ssh/devops_id_rsa.pub >> .ssh/authorized_keys
 SHELL
 
 sync_current_time = <<-SHELL
