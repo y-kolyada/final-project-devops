@@ -17,22 +17,38 @@
       ansible.builtin.dnf:
         name:
           - epel-release
-          - python3
+          - python39
         update_cache: true
         state: latest
+      register: installed_python
       when: >
         (python_installed.rc != 0) and
         (ansible_facts['os_family'] == "RedHat")
+     
+    - name: Fetch python version Task
+      ansible.builtin.shell: python --version
+      changed_when: false
+      register: python_installed
+      failed_when: false
+      when: >
+        (python_installed.rc != 0) 
+
+    - name: Print python facts Task
+      ansible.builtin.debug:
+        var: python_installed['stdout']
 
     - name: Upgrade pip Task
       ansible.builtin.shell: |        
         python3 -m ensurepip --upgrade --default-pip
         pip3 install --upgrade pip
-      become: false
-      when: >
-        (python_installed.rc != 0) and
-        (ansible_facts['os_family'] == "RedHat")
+      become: true
 
-    - name: Print python facts Task
+    - name: Fetch pip version Task
+      ansible.builtin.shell: pip3  --version
+      changed_when: false
+      register: pip_installed
+      failed_when: false
+
+    - name: Print pip facts Task
       ansible.builtin.debug:
-        var: python_installed['stdout']
+        var: pip_installed['stdout']
