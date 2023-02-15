@@ -1,0 +1,44 @@
+// vagrant-up-one
+// ver 1.0.0
+// date: 2022-02-15
+
+node("vagrant") {
+
+    def u = env.VG_USER
+    def h = ""
+    def o = env.SSH_OPTIONS
+    def home = env.VG_PATH
+    def envName = ""
+    
+    properties([
+        parameters([
+            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            description: 'Select the VM to start.', name: 'ENV_NAME')
+        ])
+    ])
+    
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+
+        h = env.VG_HOST
+
+        sh "ssh -o ${o} ${u}@${h} hostnamectl; df -Th /; uptime; \
+            last | grep '' -m3"
+
+        envName = params.ENV_NAME
+        echo "Parameter: ${envName}"
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant status ${envName}'"
+    }
+
+    stage('Up VM') {
+        echo 'Up VM...'
+
+        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            vagrant up ${envName}'"
+    }
+}
