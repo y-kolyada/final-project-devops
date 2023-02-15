@@ -42,7 +42,7 @@ servers = [
     :group => "deploy" },
   { :hostname => "jenkins", :box => "centos/stream8", :version => "20210210.0",
     :ram => 3072, :cpu => 2, :host_port => 22255, :guest_ip => "10.0.10.55",
-    :group => "infra" },
+    :group => "infra" },  
   { :hostname => "gitlab", :box => "centos/stream8", :version => "20210210.0",
     :ram => 3072, :cpu => 2, :host_port => 22256, :guest_ip => "10.0.10.56",
     :group => "infra" },
@@ -51,6 +51,9 @@ servers = [
     :group => "infra" },
   { :hostname => "terraform", :box => "centos/stream8", :version => "20210210.0",
     :ram => 3072, :cpu => 2, :host_port => 22258, :guest_ip => "10.0.10.58",
+    :group => "infra" },
+  { :hostname => "jagent1", :box => "centos/stream8", :version => "20210210.0",
+    :ram => 1024, :cpu => 2, :host_port => 22259, :guest_ip => "10.0.10.59",
     :group => "infra" }
 ]
 
