@@ -1,5 +1,5 @@
 // ansible-init-agent
-// ver 1.0.5
+// ver 1.0.6
 // date: 2022-02-16
 
 // Prerequisites:
@@ -14,9 +14,12 @@
 
 node("ansible") {
     def u = env.VG_USER
+    def devops = env.DEVOPS_USER
     def h = env.VG_HOST
     def o = env.SSH_OPTIONS
     def home = env.VG_PATH
+    def devopsHome = env.DEVOPS_PROJECT_PATH
+    def devopsProject = env.DEVOPS_PROJECT_NAME
     def envName = ""
     def agent = ""
 
@@ -148,5 +151,29 @@ node("ansible") {
         echo 'git installed...'
         
         sh 'echo "JOB_FINISH: $(date)"'
+    }
+
+    stage('Clone Git') {
+        echo 'Clone git...'
+        
+        sh "ssh -o ${o} ${u}@${envName} '[ ! -d ${u} ] && mkdir -p ${u} || echo Exist; \
+            [ -d ${u} ] && cd ${u} || echo Absent; \
+            [ ! -d ${devopsHome}/.git ] && ssh-keyscan github.com >> ~/.ssh/known_hosts || echo Exist; \
+            [ ! -d ${devopsHome}/.git ] && git clone git@github.com:y-kolyada/${devopsProject}.git || echo Exist' \
+        "
+        echo 'devops project cloned...'
+    }
+    
+    stage('Clone Inventory') {
+        echo 'Clone Inventory...'
+        
+        u = env.VG_USER
+        h = env.VG_HOST
+        home = env.ANSIBLE_PATH
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
+            scp -r ./inventory/* ${devops}@${envName}:~/${home}/inventory/' \
+        "
+        echo 'inventory cloned...'
     }
 }
