@@ -2,7 +2,8 @@
 - name: Create DevOps Users Playbook
   vars_files:
     - inventory/group_vars/infra
-    #- inventory/group_vars/development
+  vars:
+    ansible_user: devops
   hosts: "{{ host_or_group }}"
   gather_facts: false
   become: true

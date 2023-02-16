@@ -4,6 +4,7 @@
     - inventory/group_vars/infra
   vars:
     download_url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    ansible_user: devops
   hosts: "{{ host_or_group }}"
   gather_facts: true
   become: true

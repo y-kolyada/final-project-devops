@@ -4,6 +4,7 @@
     - inventory/group_vars/infra
   vars:
     host_or_group: terraform
+    ansible_user: devops
   hosts: "{{ host_or_group }}"
   gather_facts: true
   become: true
