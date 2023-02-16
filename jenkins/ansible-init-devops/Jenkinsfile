@@ -1,17 +1,21 @@
 // ansible-init-devops
-// ver 1.0.2
-// date: 2022-02-15
+// ver 1.0.3
+// date: 2022-02-16
 
 // TO DO:
-// - Automatically configure git config for the user
+// - Remove key operations into Key Deployment Center
 
-node("vagrant") {
+node("ansible") {
     def u = env.DEVOPS_USER
     def h = env.ANSIBLE_HOST
     def o = env.SSH_OPTIONS
-    def home = env.ANSIBLE_PATH
-    def devops_home = env.DEVOPS_PROJECT_PATH
+    def home = env.BASH_PATH
+    def devopsHome = env.DEVOPS_PROJECT_PATH
+    def devopsProject = env.DEVOPS_PROJECT_NAME
+    def domain = env.DOMAIN
+    def agent = env.NODE_NAME
     def envName = ""
+
 
     properties([
         parameters([
@@ -25,52 +29,87 @@ node("vagrant") {
         sh 'echo "JOB_START: $(date)"'
 
         echo "DEVOPS_USER: ${u}"
-        echo "HOST: ${h}"
-        
         echo "ANSIBLE_HOST: ${h}"
         
         envName = params.ENV_NAME
+        echo "agent: ${agent}"
 
-        // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
+        echo "Agent statistics:"
         sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+        
+        h = sh(
+            script: "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; ./get_ip.sh ${envName} ${domain}'",
+            returnStdout: true
+        ).trim()
+        echo "TARGET HOST: ${h}"
+        
+        echo "Host statistics:"
+        sh "ssh -o ${o} ${u}@${h} 'hostnamectl; df -Th /; uptime; \
+            last | grep \"\" -m3' \
+        "
     }
     
     stage('Configure network') {
         echo 'Configure network...'
  
-        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+        home = env.ANSIBLE_PATH
+ 
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
             ansible-playbook config_network.yml -e \"host_or_group=${envName}\"' \
         "
         echo 'network configured...'
     }
-    
-    stage('Clone git') {
-        echo 'Clone git...'
-        
-        sh "ssh -o ${o} ${u}@${h} 'mkdir -p ${u}; cd ${u}; \
-            [ ! -d final-project-devops ] && ssh-keyscan github.com >> ~/.ssh/known_hosts; \
-            [ ! -d final-project-devops ] && git clone git@github.com:y-kolyada/final-project-devops.git; \
-            [ -d final-project-devops ] && echo \"devops project cloned...\"' \
-        "
-    }
-    
-    stage('Configure git') {
-        echo 'Configure git...'
- 
+
+    stage('Add devops user') {
+        echo 'Add devops user...'
+
         // TO DO:
-        // - Automatically configure git config for the user
+        // - Remove key operations into Key Deployment Center
+
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            ansible-playbook create_devops_user.yml -e \"host_or_group=${envName}\" &>/dev/null; \
+            [ \$? ] && echo \"user created...\"' \
+        "
+        echo 'devops user added...'
+    }
+
+    stage('Install Java 17') {
+        echo 'Install Java 17...'
         
-        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'java 17 installed...'
+    }
+
+    stage('Install Git') {
+        echo 'Install git...'
+ 
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            ansible-playbook deploy_git.yml -e \"host_or_group=${envName}\"; \
             ansible-playbook config_git.yml -e \"host_or_group=${envName}\"' \
         "
-        echo 'git configured...'
+        echo 'git installed...'
     }
-    
-    stage('Pull git') {
-        echo 'Pull git...'
+
+
+    stage('Clone Git') {
+        echo 'Clone git...'
         
-        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
-            git pull' \
+        sh "ssh -o ${o} ${u}@${envName} '[ ! -d ${u} ] && mkdir -p ${u} || echo Exist; \
+            [ -d ${u} ] && cd ${u} || echo Absent; \
+            [ ! -d ${devopsHome}/.git ] && ssh-keyscan github.com >> ~/.ssh/known_hosts || echo Exist; \
+            [ ! -d ${devopsHome}/.git ] && git clone git@github.com:y-kolyada/${devopsProject}.git || echo Exist' \
+        "
+        echo 'devops project cloned...'
+    }
+
+    stage('Pull Git') {
+        echo 'Pull Git...'
+        
+        sh "ssh -o ${o} ${u}@${envName} ' \
+            [ -d ${devopsHome}/.git ] && cd ${devopsHome}; \
+            [ -d ${devopsHome}/.git ] && git pull' \
         "
         echo 'git pulled...'
         
