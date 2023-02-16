@@ -15,7 +15,7 @@
         shell: /bin/bash
         groups: "{{ admin_group }}"
         create_home: true
-        comment: 'Ansible DevOps Account'
+        comment: 'Ansible "devops" Account'
         expires: -1
       loop: "{{ devops_users }}"
 
