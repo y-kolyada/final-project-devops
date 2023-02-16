@@ -24,6 +24,7 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 | local    | VirtualBox   | oracle         | terraform     | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | x86_64       | xfs      |
 | local    | VirtualBox   | oracle         | dev           | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | x86_64       | xfs      |
 | local    | VirtualBox   | oracle         | qa            | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | x86_64       | xfs      |
+| local    | VirtualBox   | oracle         | dev001        | vCPU x2 AuthenticAMD       | 4GB   | 15GB  | x86_64       | xfs      |
 | aws      | ec2          | xen            | prod-devopskb | vCPU x1 GenuineIntel       | 1GB   | 10GB  | x86_64       | xfs      |
 |          |              |                |               |                            |       |       |              |          |
 
