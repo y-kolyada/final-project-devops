@@ -2,6 +2,8 @@
 - name: Configure Network Playbook
   vars_files:
     - inventory/group_vars/infra  
+  vars:
+    ansible_user: devops
   hosts: "{{ host_or_group }}"
   gather_facts: true
   become: true
