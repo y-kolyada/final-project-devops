@@ -1,6 +1,6 @@
 // ansible-init-agent
-// ver 1.0.4
-// date: 2022-02-15
+// ver 1.0.5
+// date: 2022-02-16
 
 // Prerequisites:
 // - Vagrant checks that the VM is running
@@ -38,24 +38,31 @@ node("ansible") {
         // Prerequisites:
         // - first time start should be done from host with Absible (e.g. VG_HOST)
         
+        echo "Host statistics:"
         sh "ssh -o ${o} ${u}@${h} 'hostnamectl; df -Th /; uptime; \
             last | grep \"\" -m3' \
         "
 
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; \
+            vagrant status ${envName}' \
+        "
+        
         envName = params.ENV_NAME        
         agent = params.ENV_NAME
         echo "Parameter: ${envName}"
         echo "agent: ${agent}"  
-
-        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; \
-            vagrant status ${envName}'"
+        u = env.DEVOPS_USER
+        h = env.ANSIBLE_HOST    
+        
+        echo "Agent statistics:"
+        sh "ssh -o ${o} ${u}@${h} 'hostnamectl; df -Th /; uptime; \
+            last | grep \"\" -m3' \
+        "    
     }
 
     stage('Configure network') {
         echo 'Configure network...'
         
-        u = env.DEVOPS_USER
-        h = env.ANSIBLE_HOST
         home = env.ANSIBLE_PATH
         echo "DEVOPS_USER: ${u}"
         echo "HOST: ${h}"
@@ -81,9 +88,27 @@ node("ansible") {
             [ \$? ] && echo \"user created...\"; \
             scp -o ${o} ~/.ssh/devops_id_rsa devops@${agent}:.ssh/id_rsa; \
             scp -o ${o} ~/.ssh/devops_id_rsa.pub devops@${agent}:~/.ssh/id_rsa.pub; \
+            scp -o ${o} ~/.ssh/devops_id_rsa devops@${agent}:.ssh/; \
+            scp -o ${o} ~/.ssh/devops_id_rsa.pub devops@${agent}:~/.ssh/; \
             [ \$? ] && echo \"keys copied...\"' \
         "
         echo 'devops user added...'
+    }
+    
+    stage('Add jenkins user') {
+        echo 'Add jenkins user...'
+
+        // TO DO:
+        // - Remove key operations into Key Deployment Center
+
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
+            ansible-playbook create_jenkins_user.yml -e \"host_or_group=${envName}\" &>/dev/null; \
+            [ \$? ] && echo \"user created...\"; \
+            scp -o ${o} ~/.ssh/devops_id_rsa jenkins@${agent}:.ssh/id_rsa; \
+            scp -o ${o} ~/.ssh/devops_id_rsa.pub jenkins@${agent}:~/.ssh/id_rsa.pub; \
+            [ \$? ] && echo \"keys copied...\"' \
+        "
+        echo 'jenkins user added...'
     }
     
     stage('Install Python') {
@@ -102,6 +127,15 @@ node("ansible") {
             ansible-playbook deploy_ansible.yml -e \"host_or_group=${envName}\"' \
         "
         echo 'ansible installed...'
+    }
+    
+    stage('Install Java 17') {
+        echo 'Install Java 17...'
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
+            ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'java 17 installed...'
     }
 
     stage('Install Git') {
