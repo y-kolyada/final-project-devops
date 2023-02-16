@@ -7,6 +7,16 @@
   become: true
   tasks:
 
+    - name: Install net-tools and bind-utils Task
+      ansible.builtin.dnf:
+        name:
+          - net-tools
+          - bind-utils
+        update_cache: true
+        state: latest
+      when: >
+        (ansible_facts['os_family'] == "RedHat")
+
     - name: Configure DNS search domain Task
       ansible.builtin.shell: |
         nmcli con mod "System eth0" ipv4.dns-search "ygorod.com,domain.local"
