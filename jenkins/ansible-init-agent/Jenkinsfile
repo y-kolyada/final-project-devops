@@ -1,6 +1,6 @@
 // ansible-init-agent
-// ver 1.0.6
-// date: 2022-02-16
+// ver 1.0.7
+// date: 2022-02-17
 
 // Prerequisites:
 // - Vagrant checks that the VM is running
@@ -89,9 +89,9 @@ node("ansible") {
         sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
             ansible-playbook create_devops_user.yml -e \"host_or_group=${envName}\" &>/dev/null; \
             [ \$? ] && echo \"user created...\"; \
-            scp -o ${o} ~/.ssh/devops_id_rsa devops@${agent}:.ssh/id_rsa; \
+            scp -o ${o} ~/.ssh/devops_id_rsa devops@${agent}:~/.ssh/id_rsa; \
             scp -o ${o} ~/.ssh/devops_id_rsa.pub devops@${agent}:~/.ssh/id_rsa.pub; \
-            scp -o ${o} ~/.ssh/devops_id_rsa devops@${agent}:.ssh/; \
+            scp -o ${o} ~/.ssh/devops_id_rsa devops@${agent}:~/.ssh/; \
             scp -o ${o} ~/.ssh/devops_id_rsa.pub devops@${agent}:~/.ssh/; \
             [ \$? ] && echo \"keys copied...\"' \
         "
