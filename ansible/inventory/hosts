@@ -8,6 +8,7 @@ gitlab1 ansible_host=10.0.10.57 ansible_user=vagrant
 terraform ansible_host=10.0.10.58 ansible_user=vagrant
 jagent1 ansible_host=10.0.10.59 ansible_user=vagrant
 dev001 ansible_host=10.0.10.61 ansible_user=vagrant
+qa001 ansible_host=10.0.10.71 ansible_user=vagrant
 
 [all]
 dev
@@ -20,6 +21,7 @@ gitlab1
 terraform
 jagent1
 dev001
+qa001
 
 [integration]
 dev
@@ -33,8 +35,13 @@ prod
 jenkins
 gitlab
 gitlab1
+
+[ansible]
 terraform
 jagent1
 
 [development]
 dev001
+
+[qa]
+qa001
