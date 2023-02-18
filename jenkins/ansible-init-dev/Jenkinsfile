@@ -1,5 +1,5 @@
 // ansible-init-dev
-// ver 1.0.0
+// ver 1.0.1
 // date: 2022-02-18
 
 // Prerequisites:
@@ -144,7 +144,7 @@ node("ansible") {
         sh "ssh -o ${o} ${userName}@${envName} '[ ! -d ~/${devHome} ] && mkdir -p ~/${devHome} || echo Exist; \
             [ -d ~/${devHome} ] && cd ~/${devHome} || echo Absent; \
             [ ! -d ~/${devHome}/.git ] && ssh-keyscan github.com >> ~/.ssh/known_hosts || echo Exist; \
-            [ ! -d ~/${devHome}/.git ] && git clone -b ${branch} --single-branch git@github.com:y-kolyada/${devProject}.git || echo Exist' \
+            [ ! -d ~/${devHome}/.git ] && git clone -b ${branch} git@github.com:y-kolyada/${devProject}.git || echo Exist' \
         "
         echo "dev project branch <${branch}> cloned..."
     }
