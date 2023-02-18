@@ -1,0 +1,17 @@
+---
+- name: Copy invetnory hosts file and vars to ansible VMs Playbook
+  vars_files:
+    - inventory/group_vars/infra
+  vars:
+    host_or_group: ansible
+    ansible_user: devops
+  hosts: "{{ host_or_group }}"
+  gather_facts: true
+  become: true
+  tasks:
+
+    - name: Copy hosts file and vars Task
+      ansible.builtin.copy:
+        #src: /home/{{ users[0] }}/{{ devops_project_path }}/ansible/inventory/
+        src: /home/{{ devops_users[0] }}/{{ devops_project_path }}/ansible/inventory/
+        dest: /home/{{ devops_users[0] }}/{{ devops_project_path }}/ansible/inventory/
