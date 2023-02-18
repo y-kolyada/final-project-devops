@@ -34,7 +34,9 @@
           - code
         update_cache: yes
         state: latest
-      when: installed_code.rc != 0
+      when: >
+        (installed_code.rc != 0) and
+        (ansible_facts['os_family'] == 'RedHat')
 
     - name: Check Code version Task
       ansible.builtin.shell: |
