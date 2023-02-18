@@ -8,22 +8,21 @@
   gather_facts: true
   become: true
   tasks:
-    - name: Check if Code package is installed Task
-      ansible.builtin.command: dnf list code
-      register: installed_code
-      failed_when: false
-      changed_when: installed_code != 0
-      when: ansible_facts['os_family'] == 'RedHat'
+#    - name: Check if Code package is installed Task
+#      ansible.builtin.command: dnf list code
+#      register: installed_code
+#      failed_when: false
+#      changed_when: installed_code != 0
+#      when: ansible_facts['os_family'] == 'RedHat'
 
-    - name: Print Code facts Task
-      ansible.builtin.debug:
-        var: installed_code['stdout']
+#    - name: Print Code facts Task
+#      ansible.builtin.debug:
+#        var: installed_code['stdout']
 
     - name: Validate if Code is availble Task
       ansible.builtin.shell: code --version
       register: installed_code
       failed_when: false
-
 
     - name: Install Import Microsoft Key Task
       ansible.builtin.shell: |
@@ -32,7 +31,6 @@
         (installed_code.rc != 0) and
         (ansible_facts['os_family'] == 'RedHat')
 
-
     - name: Install Code repo Task
       ansible.builtin.shell: |
         echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo
@@ -40,17 +38,17 @@
         (installed_code.rc != 0) and
         (ansible_facts['os_family'] == 'RedHat')
 
-    - name: Check dnf updates Task
-      ansible.builtin.shell: |
-        dnf check-update
-      register: update
-      failed_when: false
-      when: >
-        (ansible_facts['os_family'] == 'RedHat')
+#   - name: Check dnf updates Task
+#     ansible.builtin.shell: |
+#       dnf check-update
+#     register: update
+#     failed_when: false
+#     when: >
+#       (ansible_facts['os_family'] == 'RedHat')
 
-    - name: Print updates facts Task
-      ansible.builtin.debug:
-        var: update['stdout']
+#   - name: Print updates facts Task
+#     ansible.builtin.debug:
+#       var: update['stdout']
 
     - name: Install Code package from repo Task
       ansible.builtin.dnf:
