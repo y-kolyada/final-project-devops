@@ -1,0 +1,82 @@
+// ansible-adduser-devops
+// ver 1.0.0
+// date: 2022-02-18
+
+// Prerequisites:
+// - new VM should be added to the DNS
+// - Ansible inventory hosts file should be pulled from repository on the jenkins ansible agents
+
+// TO DO:
+// - Remove key operations into Key Deployment Center
+
+node("ansible") {
+    def u = env.DEVOPS_USER
+    def vagrantUser = env.VG_DEFAUTL_USER
+    def h = env.ANSIBLE_HOST
+    def o = env.SSH_OPTIONS
+    def home = env.BASH_PATH
+    def agent = env.NODE_NAME
+    def envName = ""
+
+
+    properties([
+        parameters([
+            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001', 'qa001'], 
+            description: 'Select a VM to add devops user.', name: 'ENV_NAME')
+        ])
+    ])
+    
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "ANSIBLE_HOST: ${h}"
+        
+        envName = params.ENV_NAME
+        echo "agent: ${agent}"
+
+        echo "Agent statistics:"
+        sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+        
+        h = sh(
+            script: "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; ./get_ip.sh ${envName} ${domain}'",
+            returnStdout: true
+        ).trim()
+        echo "TARGET HOST: ${h}"
+        
+        u = env.VG_DEFAUTL_USER
+        echo "Host statistics:"
+        sh "ssh -o ${o} ${u}@${h} 'hostnamectl; df -Th /; uptime; \
+            last | grep \"\" -m3' \
+        "
+    }
+    
+    stage('Configure network') {
+        echo 'Configure network...'
+ 
+        u = env.DEVOPS_USER
+        h = env.ANSIBLE_HOST
+        home = env.ANSIBLE_PATH
+                
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            ansible-playbook config_network.yml -e \"host_or_group=${envName} ansible_user=${vagrantUser}\"' \
+        "
+        echo 'network configured...'
+    }
+
+    stage('Add devops user') {
+        echo 'Add devops user...'
+
+        // TO DO:
+        // - Remove key operations into Key Deployment Center
+
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            ansible-playbook create_devops_user.yml -e \"host_or_group=${envName} ansible_user=${vagrantUser}\" &>/dev/null; \
+            [ \$? ] && echo \"user created...\"' \
+        "
+        echo 'devops user added...'
+        
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
