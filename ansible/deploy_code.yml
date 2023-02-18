@@ -24,6 +24,10 @@
       register: installed_code
       failed_when: false
 
+    - name: Print Code facts Task
+      ansible.builtin.debug:
+        var: installed_code
+
     - name: Install Import Microsoft Key Task
       ansible.builtin.shell: |
         rpm --import https://packages.microsoft.com/keys/microsoft.asc
