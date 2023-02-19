@@ -1,5 +1,5 @@
 // ansible-init-dev
-// ver 1.0.2
+// ver 1.0.3
 // date: 2022-02-19
 
 // Prerequisites:
@@ -130,9 +130,18 @@ node("ansible") {
         echo 'Install Java 17...'
         
         sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
-            [[ \$(java -version) ]] || ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
+            [ \$(java --version) ] || ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
         "
         echo 'java 17 installed...'
+    }
+    
+    stage('Install Maven') {
+        echo 'Install Maven...'
+        
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            [ \$(mvn --version) ] || ansible-playbook deploy_maven.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'maven installed...'
     }
     
     stage('Install VS Code') {
@@ -152,8 +161,8 @@ node("ansible") {
         echo 'Install Git...'
  
         sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
-            [[ \$(git --version) ]] || ansible-playbook deploy_git.yml -e \"host_or_group=${envName}\"; \
-            [[ \$(git --version) ]] || ansible-playbook config_git.yml -e \"host_or_group=${envName}\"' \
+            [ \$(git --version) ] || ansible-playbook deploy_git.yml -e \"host_or_group=${envName}\"; \
+            [ \$(git --version) ] || ansible-playbook config_git.yml -e \"host_or_group=${envName}\"' \
         "
         echo 'git installed...'
     }
