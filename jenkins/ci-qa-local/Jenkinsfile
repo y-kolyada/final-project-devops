@@ -1,0 +1,35 @@
+// ci-qa-local
+// ver 1.0.0
+// date: 2022-02-19
+
+// Prerequisites:
+// - build-app-qa job
+
+node("java") {
+    def u = env.DEVOPS
+    def h = env.VG_HOST
+    def o = env.SSH_OPTIONS
+    def home = env.VG_PATH
+    def envName = ""
+
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+
+        sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+
+        envName = "terraform"
+        echo "Parameter: ${envName}"
+    }
+    
+    stage('CI on local QA') {
+        echo 'CI on local QA...'
+        
+        build job:'build-app-qa', wait: true
+        
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
