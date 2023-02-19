@@ -13,7 +13,7 @@ echo "APP_RUN: ${APP_RUN}"
 echo "PROJECT_PATH: ${PROJECT_PATH}"
 echo "MAIN_CLASS: ${MAIN_CLASS}"
 
-cd ${PROJECT_PATH}/target
+cd ${PROJECT_PATH}/bin
 rm ../run_app.log > /dev/null 2>&1
 echo "Run app <${APP_RUN}> ..."
 #setsid -w ${APP_RUN} ${MAIN_CLASS} > ../run_app.log & 
