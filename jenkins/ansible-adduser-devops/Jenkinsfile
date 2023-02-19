@@ -1,6 +1,6 @@
 // ansible-adduser-devops
-// ver 1.0.0
-// date: 2023-02-18
+// ver 1.0.1
+// date: 2023-02-19
 
 // Prerequisites:
 // - new VM should be added to the DNS
@@ -17,6 +17,7 @@ node("ansible") {
     def home = env.BASH_PATH
     def agent = env.NODE_NAME
     def envName = ""
+    def envIP = ""
 
 
     properties([
@@ -44,6 +45,7 @@ node("ansible") {
             returnStdout: true
         ).trim()
         echo "TARGET HOST: ${h}"
+        envIP = h
         
         u = env.VG_DEFAUTL_USER
         echo "Host statistics:"
@@ -58,7 +60,7 @@ node("ansible") {
         u = env.DEVOPS_USER
         h = env.ANSIBLE_HOST
         home = env.ANSIBLE_PATH
-                
+        
         sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
             ansible-playbook config_network.yml -e \"host_or_group=${envName} ansible_user=${vagrantUser}\"' \
         "
@@ -73,7 +75,10 @@ node("ansible") {
 
         sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
             ansible-playbook create_devops_user.yml -e \"host_or_group=${envName} ansible_user=${vagrantUser}\" &>/dev/null; \
-            [ \$? ] && echo \"user created...\"' \
+            [ \$? ] && echo \"user created...\"; \
+            scp -o ${o} ~/.ssh/devops_id_rsa devops@${envIP}:~/.ssh/id_rsa; \
+            scp -o ${o} ~/.ssh/devops_id_rsa.pub devops@${envIP}:~/.ssh/id_rsa.pub; \
+            [ \$? ] && echo \"keys copied...\"' \
         "
         echo 'devops user added...'
         
