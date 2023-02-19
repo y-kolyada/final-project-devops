@@ -1,6 +1,6 @@
 // ansible-init-dev
-// ver 1.0.1
-// date: 2022-02-18
+// ver 1.0.2
+// date: 2022-02-19
 
 // Prerequisites:
 // - new VM should be added to the DNS
@@ -70,11 +70,17 @@ node("ansible") {
         echo "DEVOPS_USER: ${u}"
         
         envName = params.ENV_NAME
-        echo "agent: ${agent}"
-        userName = params.USERNAME
-        echo "user name: ${userName}"
+        echo "ENV_NAME: ${ENV_NAME}"
         branch = params.BRANCH
         echo "branch: ${BRANCH}"
+        echo "agent: ${agent}"
+
+        if ( params.USERNAME.toString().isEmpty() ) {
+            userName = env.DEVOPS_USER
+        } else {
+            userName = params.USERNAME
+        }
+        echo "user name: ${userName}"
 
         echo "Agent statistics:"
         sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
@@ -93,27 +99,38 @@ node("ansible") {
 
      stage('Add dev/qa user') {
         echo 'Add dev/qa user...'
+        echo "userName: ${userName}"
         
         home = env.ANSIBLE_PATH
 
         // TO DO:
         // - Remove key operations into Key Deployment Center
-
+        
         sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
-            ansible-playbook create_dev_user.yml -e \"host_or_group=${envName} user=${userName}\" &>/dev/null; \
-            [ \$? ] && echo \"user created...\"; \
-            scp -o ${o} ~/.ssh/dev_id_rsa ${userName}@${envName}:~/.ssh/id_rsa; \
-            scp -o ${o} ~/.ssh/dev_id_rsa.pub ${userName}@${envName}:~/.ssh/id_rsa.pub; \
+            scp -o ${o} ~/.ssh/dev_id_rsa ${u}@${envName}:~/.ssh/id_rsa; \
+            scp -o ${o} ~/.ssh/dev_id_rsa.pub ${u}@${envName}:~/.ssh/id_rsa.pub; \
             [ \$? ] && echo \"keys copied...\"' \
         "
-        echo "dev user/qa <${userName}> added..."
+        
+        if ( params.USERNAME.toString().isEmpty() ) {
+            echo "user creation is skipped..."
+        } else {
+            sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+                ansible-playbook create_dev_user.yml -e \"host_or_group=${envName} user=${userName}\" &>/dev/null; \
+                [ \$? ] && echo \"user created...\"; \
+                scp -o ${o} ~/.ssh/dev_id_rsa ${userName}@${envName}:~/.ssh/id_rsa; \
+                scp -o ${o} ~/.ssh/dev_id_rsa.pub ${userName}@${envName}:~/.ssh/id_rsa.pub; \
+                [ \$? ] && echo \"keys copied...\"' \
+            "
+            echo "dev user/qa <${userName}> added..."
+        }
     }
 
     stage('Install Java 17') {
         echo 'Install Java 17...'
         
         sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
-            ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
+            [[ \$(java -version) ]] || ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
         "
         echo 'java 17 installed...'
     }
@@ -121,18 +138,22 @@ node("ansible") {
     stage('Install VS Code') {
         echo 'Install VS Code...'
         
-        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
-            ansible-playbook deploy_code.yml -e \"host_or_group=${envName}\"' \
-        "
-        echo 'visual studion code installed...'
+        if ( params.USERNAME.toString().isEmpty() ) {
+            echo "VS Code installation is skipped..."
+        } else {
+            sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+                ansible-playbook deploy_code.yml -e \"host_or_group=${envName}\"' \
+            "
+            echo 'visual studion code installed...'
+        }
     }    
 
     stage('Install Git') {
         echo 'Install Git...'
  
         sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
-            ansible-playbook deploy_git.yml -e \"host_or_group=${envName}\"; \
-            ansible-playbook config_git.yml -e \"host_or_group=${envName}\"' \
+            [[ \$(git --version) ]] || ansible-playbook deploy_git.yml -e \"host_or_group=${envName}\"; \
+            [[ \$(git --version) ]] || ansible-playbook config_git.yml -e \"host_or_group=${envName}\"' \
         "
         echo 'git installed...'
     }
