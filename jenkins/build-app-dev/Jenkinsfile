@@ -1,0 +1,165 @@
+// build-app-dev
+// ver 1.0.0
+// date: 2022-02-18
+
+pipeline{
+    agent {
+        label "java"
+    }
+    
+    environment {
+        HOST = ""
+    }
+    
+    stages {
+        stage('Init') {
+            when {
+                expression { env.ENV == 'DEV' || env.EMV == 'QA' }
+            }
+            steps {
+                echo "Jenkins agent info:"
+                withCredentials([sshUserPrivateKey(credentialsId: 'devops-id-rsa', keyFileVariable: 'keyFile', 
+                    passphraseVariable: 'passphrase', usernameVariable: 'username')]) {
+                    sh 'hostnamectl'
+                    sh 'df -Th /'
+                }
+                    
+                echo "--- ${JOB_NAME} ---"
+                sh 'echo "JOB_START: $(date)"'
+                
+                echo "ENV: ${ENV}"
+                echo "BUILD_NUMBER: ${env.BUILD_NUMBER}"
+                script {
+                    def host = ""
+
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else {
+                        echo "Please define value for ENV variable!"
+                        sh 'exit 1'
+                    }
+                    
+                    withEnv(["HOST=${host}"]) {
+                        sh '''
+                            echo "DEVOPS_USER@HOST: ${DEVOPS_USER}@${HOST}"
+                            
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "hostnamectl"
+                            
+                            echo "Pull src from git..."
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; git checkout dev; git pull"
+                            
+                            echo "Stopping app if running..."
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_stopapp_localdev.sh"
+                            
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn clean"
+                        '''
+                    }
+                }
+            }
+        }
+        
+        stage('Build') {
+            steps {
+                script {
+                    def host = ""
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn compile"'
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    def host = ""
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn test"'
+                    }
+                }
+            }
+        }
+        
+        stage('Push artifacts') {
+            steps {
+                script {
+                    def host = ""
+                    def app = env.APP
+
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh '''
+                            echo "Building package..."
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn package"
+                            
+                            echo "Tag package..."
+                            echo "tag: ${VER_DEV}.${BUILD_NUMBER}"
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; git tag ${VER_DEV}.${BUILD_NUMBER}; git push --tags"
+                        '''
+                    }
+                }
+            }
+        }
+        
+        stage('Deploy to DEV') {
+            steps {
+                script {
+                    def host = ""
+                    def app = env.APP
+
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh '''
+                            echo "Copy package..."
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; pwd; cp ./target/${APP}.jar ./bin/"
+                            
+                            echo "Running builded app..."
+                            ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_runapp_localdev.sh"
+                        '''
+                    }
+                }
+                sh 'echo "JOB_FINISH: $(date)"'
+            }
+        }
+    }
+}
