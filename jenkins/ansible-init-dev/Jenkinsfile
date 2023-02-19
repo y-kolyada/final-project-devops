@@ -1,0 +1,164 @@
+// ansible-init-dev
+// ver 1.0.1
+// date: 2022-02-18
+
+// Prerequisites:
+// - new VM should be added to the DNS
+// - Ansible inventory hosts file should be pulled from repository on the jenkins ansible agents
+
+// TO DO:
+// - Remove key operations into Key Deployment Center
+
+node("ansible") {
+    def u = env.DEVOPS_USER
+    def h = env.ANSIBLE_HOST
+    def o = env.SSH_OPTIONS
+    def home = env.BASH_PATH
+    def devHome = env.DEV_PATH
+    def devProject = env.PROJECT_NAME
+    def projectPath = env.PROJECT_PATH
+    def domain = env.DOMAIN
+    def agent = env.NODE_NAME
+    def envName = ""
+    def userName = ""
+    def branch = ""
+
+    properties([
+        parameters([
+            choice(name: 'ENV_NAME', choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001', 'qa001'], 
+                description: 'Please select a VM to initialize the DevOps environment.'),
+            string(name: 'USERNAME', description: 'Please enter a user name to register in the system.', trim: true),
+            choice(name: 'BRANCH', choices: ['dev', 'qa', 'integ', 'main'], description: 'Please select git branch to clone.')
+        ])
+    ])
+
+/*
+    properties([
+        parameters([
+            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            description: 'Please select a VM to initialize the DevOps environment.', name: 'ENV_NAME')
+        ])
+    ])
+    
+    properties([parameters([string(description: 'Please enter a user name to register in the system.', name: 'USERNAME', trim: true)])])
+    
+    properties([parameters([choice(choices: ['dev', 'qa', 'integ', 'main'], description: 'Please select git branch to clone.', name: 'BRANCH')])
+    ])
+    
+    env.USERNAME = input message: 'User input required',
+        parameters: [string(defaultValue: '',
+            description: 'Please enter the username.',
+            name: 'Username', trim: true)]
+    userName = env.USERNAME
+    echo "Username: ${userName}"
+    
+    def BRANCH = input message: 'User input required', ok: 'Next', 
+        parameters: [choice(name: 'INPUT', choices: ['dev','qa','integ','main'], description: 'Please select branch to clone.')]
+    echo "Selected branch: ${BRANCH}"
+
+    env.PASSWORD = input message: 'Please enter the password',
+        parameters: [password(defaultValue: '',
+            description: 'password',
+            name: 'Password', trim: true)]
+    echo "Password: ${env.PASSWORD}"
+*/
+
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        
+        envName = params.ENV_NAME
+        echo "agent: ${agent}"
+        userName = params.USERNAME
+        echo "user name: ${userName}"
+        branch = params.BRANCH
+        echo "branch: ${BRANCH}"
+
+        echo "Agent statistics:"
+        sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+        
+        h = sh(
+            script: "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; ./get_ip.sh ${envName} ${domain}'",
+            returnStdout: true
+        ).trim()
+        echo "TARGET HOST: ${h}"
+        
+        echo "Host statistics:"
+        sh "ssh -o ${o} ${u}@${h} 'hostnamectl; df -Th /; uptime; \
+            last | grep \"\" -m3' \
+        "
+    }
+
+     stage('Add dev/qa user') {
+        echo 'Add dev/qa user...'
+        
+        home = env.ANSIBLE_PATH
+
+        // TO DO:
+        // - Remove key operations into Key Deployment Center
+
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            ansible-playbook create_dev_user.yml -e \"host_or_group=${envName} user=${userName}\" &>/dev/null; \
+            [ \$? ] && echo \"user created...\"; \
+            scp -o ${o} ~/.ssh/dev_id_rsa ${userName}@${envName}:~/.ssh/id_rsa; \
+            scp -o ${o} ~/.ssh/dev_id_rsa.pub ${userName}@${envName}:~/.ssh/id_rsa.pub; \
+            [ \$? ] && echo \"keys copied...\"' \
+        "
+        echo "dev user/qa <${userName}> added..."
+    }
+
+    stage('Install Java 17') {
+        echo 'Install Java 17...'
+        
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'java 17 installed...'
+    }
+    
+    stage('Install VS Code') {
+        echo 'Install VS Code...'
+        
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            ansible-playbook deploy_code.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'visual studion code installed...'
+    }    
+
+    stage('Install Git') {
+        echo 'Install Git...'
+ 
+        sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
+            ansible-playbook deploy_git.yml -e \"host_or_group=${envName}\"; \
+            ansible-playbook config_git.yml -e \"host_or_group=${envName}\"' \
+        "
+        echo 'git installed...'
+    }
+
+    stage('Clone Git') {
+        echo 'Clone Git...'
+        
+        // git clone -b <branchname> --single-branch <remote-repo-url>
+        sh "ssh -o ${o} ${userName}@${envName} '[ ! -d ~/${devHome} ] && mkdir -p ~/${devHome} || echo Exist; \
+            [ -d ~/${devHome} ] && cd ~/${devHome} || echo Absent; \
+            [ ! -d ~/${devHome}/.git ] && ssh-keyscan github.com >> ~/.ssh/known_hosts || echo Exist; \
+            [ ! -d ~/${devHome}/.git ] && git clone -b ${branch} git@github.com:y-kolyada/${devProject}.git || echo Exist' \
+        "
+        echo "dev project branch <${branch}> cloned..."
+    }
+
+    stage('Pull Git') {
+        echo 'Pull Git...'
+        
+        sh "ssh -o ${o} ${userName}@${envName} ' \
+            [ -d ~/${projectPath}/.git ] && cd ~/${projectPath}; \
+            [ -d ~/${projectPath}/.git ] && git checkout ${branch}; \
+            [ -d ~/${projectPath}/.git ] && git pull' \
+        "
+        echo "git branch ${branch} pulled..."
+        
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
