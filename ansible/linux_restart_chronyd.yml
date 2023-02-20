@@ -13,3 +13,4 @@
         name: chronyd
         state: restarted
         daemon_reload: true
+      failed_when: false
