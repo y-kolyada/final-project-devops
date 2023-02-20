@@ -1,0 +1,35 @@
+// linux-restart-chronyd
+// ver 1.0.0
+// date: 2023-02-20
+
+node("ansible") {
+    def u = env.DEVOPS_USER
+    def h = env.ANSIBLE_HOST
+    def o = env.SSH_OPTIONS
+    def home = env.ANSIBLE_PATH
+
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+
+        sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+
+        envName = "terraform"
+        echo "Parameter: ${envName}"
+    }
+    
+    stage('Restart chronyd') {
+        echo 'Restart chronyd...'
+        
+        sh "ssh -o ${o} ${u}@${h} 'cd ~/${home}; pwd; \
+            ansible-playbook linux_restart_chronyd.yml -e \"host_or_group=all\"; \
+            err=\$?; \
+            [[ \${err} != 0 ]] && echo \"playbook exit ERROR code: \${err}\" ' \
+        "
+        
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
