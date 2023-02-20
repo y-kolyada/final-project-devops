@@ -1,0 +1,15 @@
+--
+- name: Restart chronyd service Playbook
+  vars_files:    
+    - inventory/group_vars/infra
+  vars:
+    ansible_user: devops
+  hosts: "{{ host_or_group }}"
+  gather_facts: false
+  become: true
+  tasks:
+    - name: Restart chronyd service Task
+      ansible.builtin.systemd:
+        name: chronyd
+        state: restarted
+        daemon_reload: true
