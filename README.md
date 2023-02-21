@@ -66,4 +66,7 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 
 ## TO DO (future improvements)
 
-1. Make Key Deployment Center
+1. Implement INTEG (STAGE) and-to-end test environment and pipeline
+2. Refactor jenkins code
+3. Test Jenkins pipeline on real project
+4. Make Key Deployment Center/Process
