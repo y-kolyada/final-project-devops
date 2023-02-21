@@ -1,4 +1,4 @@
-# CI/CD prototype Final Project L1
+# CI/CD prototype Final Project L1, v2.0.0
 
 Developed by : [Yakov Kolyada](https://github.com/y-kolyada)
 
@@ -16,17 +16,17 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 ## Environment
 
 ### Hardware & Virtual resources
-| Location | Type         | Virtualization | Name          | CPU                        | RAM   | HDD   | Architecture | FS Type  |
-|:---------|:------------:|:--------------:|:--------------|:--------------------------:|:-----:|:-----:|:------------:|:--------:|
-| local    | ITX desktop  | AMD-V          | h3            | AMD Ryzen 5 PRO 2400GE x4  | 64GB  | 1TB   | x86_64       | xfs      |
-| local    | VirtualBox   | oracle         | jenkins       | vCPU x2 AuthenticAMD       | 3GB   | 12GB  | x86_64       | xfs      |
-| local    | VirtualBox   | oracle         | jagent1       | vCPU x2 AuthenticAMD       | 1GB   | 10GB  | x86_64       | xfs      |
-| local    | VirtualBox   | oracle         | terraform     | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | x86_64       | xfs      |
-| local    | VirtualBox   | oracle         | dev           | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | x86_64       | xfs      |
-| local    | VirtualBox   | oracle         | qa            | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | x86_64       | xfs      |
-| local    | VirtualBox   | oracle         | dev001        | vCPU x2 AuthenticAMD       | 4GB   | 15GB  | x86_64       | xfs      |
-| aws      | ec2          | xen            | prod-devopskb | vCPU x1 GenuineIntel       | 1GB   | 10GB  | x86_64       | xfs      |
-|          |              |                |               |                            |       |       |              |          |
+| Location | Type         | Virtualization | Name          | CPU                        | RAM   | HDD   | FS Type |
+|:---------|:------------:|:--------------:|:--------------|:--------------------------:|:-----:|:-----:|:-------:|
+| local    | ITX desktop  | AMD-V          | h3            | AMD Ryzen 5 PRO 2400GE x4  | 64GB  | 1TB   | xfs     |
+| local    | VirtualBox   | oracle         | jenkins       | vCPU x2 AuthenticAMD       | 3GB   | 12GB  | xfs     |
+| local    | VirtualBox   | oracle         | jagent1       | vCPU x2 AuthenticAMD       | 1GB   | 10GB  | xfs     |
+| local    | VirtualBox   | oracle         | terraform     | vCPU x2 AuthenticAMD       | 2GB   | 10GB  | xfs     |
+| local    | VirtualBox   | oracle         | dev           | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | xfs     |
+| local    | VirtualBox   | oracle         | qa            | vCPU x2 AuthenticAMD       | 2GB   | 10GB  | xfs     |
+| local    | VirtualBox   | oracle         | prod (preprod)| vCPU x2 AuthenticAMD       | 1.5GB | 10GB  | xfs     |
+| aws      | ec2          | xen            | prod-devopskb | vCPU x1 GenuineIntel       | 1GB   | 10GB  | xfs     |
+|          |              |                |               |                            |       |       |         |
 
 ## DevOps architecture components
 
