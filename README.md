@@ -13,8 +13,7 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 1. [CentOS Stream 8, GNU GPL](https://www.centos.org/centos-stream/)
 2. [Vagrant 2.3.4, MIT](https://developer.hashicorp.com/vagrant/downloads)
 
-## Environment
-
+## Infrastructure
 ### Hardware & Virtual resources
 | Location | Type         | Virtualization | Name          | CPU                        | RAM   | HDD   | FS Type |
 |:---------|:------------:|:--------------:|:--------------|:--------------------------:|:-----:|:-----:|:-------:|
@@ -27,6 +26,11 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 | local    | VirtualBox   | oracle         | prod (preprod)| vCPU x2 AuthenticAMD       | 1.5GB | 10GB  | xfs     |
 | aws      | ec2          | xen            | prod-devopskb | vCPU x1 GenuineIntel       | 1GB   | 10GB  | xfs     |
 |          |              |                |               |                            |       |       |         |
+### Environments
+- DEV, development environment on VM "dev"
+- QA, test environment on VM "qa"
+- PREPROD, pre-production environment on local VM "prod"
+- PROD, production environment on AWS EC2 VM "prod-devopskb"
 
 ## DevOps architecture components
 
