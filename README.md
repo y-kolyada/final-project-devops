@@ -83,9 +83,11 @@ In descending order of priority:
 
 1. Implement INTEG (STAGE) and-to-end test environment and pipeline 
 2. Refactor jenkins code
-3. Test Jenkins pipeline on real project
-4. Update project documentation
-5. Organize or participate in Junior DevOps [meetup](https://blog.ithillel.ua/ru/articles/zachem-aytishnikam-mitapy)
-6. Add monitoring capabilities
-7. Research AWS CI/CD
-8. Make Key Deployment Center/Process
+3. Partial compilation of changed classes for big volumes of source code
+4. Email notification of bugs during testing
+5. Test Jenkins pipeline on real project
+6. Update project documentation
+7. Organize or participate in Junior DevOps [meetup](https://blog.ithillel.ua/ru/articles/zachem-aytishnikam-mitapy)
+8. Add monitoring capabilities
+9. Research AWS CI/CD
+10. Make Key Deployment Center/Process
