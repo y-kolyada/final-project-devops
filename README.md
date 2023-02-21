@@ -1,4 +1,6 @@
-# CI/CD prototype Final Project L1, v2.0.0
+# Jenkins CI/CD prototype for Java development - Final Project L1
+
+Last release: v2.0.0
 
 Developed by : [Yakov Kolyada](https://github.com/y-kolyada)
 
