@@ -1,4 +1,4 @@
-# Jenkins CI/CD prototype for Java development - Final Project L1
+# Jenkins CI/CD prototype for Java development  - Final Project L1
 
 Last release: v2.0.0
 
@@ -68,7 +68,11 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 
 ## TO DO (future improvements)
 
+In descending order of priority:
+
 1. Implement INTEG (STAGE) and-to-end test environment and pipeline
 2. Refactor jenkins code
 3. Test Jenkins pipeline on real project
-4. Make Key Deployment Center/Process
+4. Update project documentation
+5. Organize or participate in Junior DevOps [meetup](https://blog.ithillel.ua/ru/articles/zachem-aytishnikam-mitapy)
+6. Make Key Deployment Center/Process
