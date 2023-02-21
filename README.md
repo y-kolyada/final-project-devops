@@ -1,4 +1,4 @@
-# Jenkins CI/CD prototype for Java development  - Final Project L1
+# Jenkins CI/CD prototype for Java development  \ Final Project L1
 
 Last release: v2.0.0
 
@@ -9,7 +9,7 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 
 ## Introduction
 
-According to Amazon's vision, DevOps Practices is:
+According to Amazon's vision, DevOps Practices are:
 1. Communication and collaboration - p1
 2. Monitoring and observability - p2
 3. Continuous integration (CI) - p3
