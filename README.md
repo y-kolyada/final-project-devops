@@ -7,6 +7,17 @@ Developed by : [Yakov Kolyada](https://github.com/y-kolyada)
 Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 
 
+## Introduction
+
+According to Amazon's vision, DevOps Practices is:
+1. Communication and collaboration - p1
+2. Monitoring and observability - p2
+3. Continuous integration (CI) - p3
+4. Continuous delivery/continuous development (CD) - p4
+5. Microservices archirecture - p5
+6. Infrastructure as a code - p6
+
+
 ## Results
 
 1. [DevOps folder of the project](https://github.com/y-kolyada/final-project-devops)
@@ -70,9 +81,11 @@ Email : [yakov.kolyada@gmail.com](mailto:yakov.kolyada@gmail.com)
 
 In descending order of priority:
 
-1. Implement INTEG (STAGE) and-to-end test environment and pipeline
+1. Implement INTEG (STAGE) and-to-end test environment and pipeline 
 2. Refactor jenkins code
 3. Test Jenkins pipeline on real project
 4. Update project documentation
 5. Organize or participate in Junior DevOps [meetup](https://blog.ithillel.ua/ru/articles/zachem-aytishnikam-mitapy)
-6. Make Key Deployment Center/Process
+6. Add monitoring capabilities
+7. Research AWS CI/CD
+8. Make Key Deployment Center/Process
