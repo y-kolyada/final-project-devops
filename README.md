@@ -81,13 +81,15 @@ According to Amazon's vision, DevOps Practices are:
 
 In descending order of priority:
 
-1. Implement INTEG (STAGE) and-to-end test environment and pipeline 
+1. Implement INTEG (STAGE) and-to-end test environment and pipeline
 2. Refactor jenkins code
-3. Partial compilation of changed classes for big volumes of source code
-4. Email notification of bugs during testing
-5. Test Jenkins pipeline on real project
-6. Update project documentation
-7. Organize or participate in Junior DevOps [meetup](https://blog.ithillel.ua/ru/articles/zachem-aytishnikam-mitapy)
-8. Add monitoring capabilities
-9. Research AWS CI/CD
-10. Make Key Deployment Center/Process
+3. Research partial compilation (changed classes for big volumes of code)
+4. Implement email notification of bugs during testing
+5. Accelerate deployment speed on AWS EC2
+6. Apply and test deployment strategies
+7. Test Jenkins pipeline on real project
+8. Update project documentation
+9. Organize or participate in Junior DevOps meetup
+10. Add monitoring capabilities
+11. Research AWS CI/CD
+12. Make Key Deployment Center/Process
