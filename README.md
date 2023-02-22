@@ -34,7 +34,7 @@ According to Amazon's vision, DevOps Practices are:
 
 ## Infrastructure
 
-![Teams, environments and infrastructure](/doc/doc_teams_environments_infrastructure_1.png)
+![Teams, environments and infrastructure](/docs/doc_teams_environments_infrastructure_1.png)
 
 ### Hardware & Virtual resources
 | Location | Type         | Virtualization | Name          | CPU                        | RAM   | HDD   | FS Type |
@@ -74,7 +74,7 @@ According to Amazon's vision, DevOps Practices are:
 
 ### Jenkins main pipelines
 
-![Jenkins main pipelines](/doc/jenkins_main_pipelines_1.png)
+![Jenkins main pipelines](/docs/jenkins_main_pipelines_1.png)
 
 
 ## TO DO (future improvements)
