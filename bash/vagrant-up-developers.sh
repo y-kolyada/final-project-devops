@@ -4,4 +4,5 @@
 
 cd $FINAL_PROJECT_DEVOPS_HOME/vagrant
 vagrant up dev001
+vagrant up qa001
 vagrant status
