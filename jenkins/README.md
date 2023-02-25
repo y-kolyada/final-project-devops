@@ -80,7 +80,9 @@ See the "infra" view in the Jenkins GUI.
 | [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh) |  | vagrant "up" developer's VMs | infra |
 | [vagrant-up-all](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-all/Jenkinsfile) | vagrant | vagrant "up" all VMs | infra |
 | [vagrant-halt-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-halt-one/Jenkinsfile) | vagrant | vagrant "halt" one VM | infra |
-| [vagrant-halt-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-halt-one/Jenkinsfile) | vagrant | vagrant "halt" infrastructure's VMs | infra |
+| [vagrant-halt-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-infrastructure.sh) |  | vagrant "halt" infrastructure's VMs | infra |
+| [vagrant-halt-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-developers.sh) |  | vagrant "halt" developer's VMs | infra |
+| [vagrant-halt-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-all.sh) | vagrant | vagrant "halt" all VMs | infra |
 |           |              |                              |        |
 
 
