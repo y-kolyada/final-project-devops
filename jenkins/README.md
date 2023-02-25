@@ -74,10 +74,13 @@ See the "infra" view in the Jenkins GUI.
 | Job name  | Label        | Job Descriptions             | View   |
 |:----------|:------------:|:-----------------------------|:-------|
 | [vagrant-status-all](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-status-all/Jenkinsfile) | vagrant | vagrant gets the status of all VMs | infra |
-| [vagrant-up-new](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins/vagrant-up-new) | vagrant | first time "up" will create a new VM or "up" existing VM and update the System | infra |
+| [vagrant-up-new](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-new/Jenkinsfile) | vagrant | first time "up" will create a new VM or "up" existing VM and update the System | infra |
 | [vagrant-up-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-one/Jenkinsfile) | vagrant | vagrant "up" one VM | infra |
-| [vagrant-up-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-infrastructure.sh) | vagrant | vagrant "up" infrastructure's VMs | infra |
-| [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh) | vagrant | vagrant "up" developer's VMs | infra |
+| [vagrant-up-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-infrastructure.sh) |  | vagrant "up" infrastructure's VMs | infra |
+| [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh) |  | vagrant "up" developer's VMs | infra |
+| [vagrant-up-all](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-all/Jenkinsfile) | vagrant | vagrant "up" all VMs | infra |
+| [vagrant-halt-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-halt-one/Jenkinsfile) | vagrant | vagrant "halt" one VM | infra |
+| [vagrant-halt-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-halt-one/Jenkinsfile) | vagrant | vagrant "halt" infrastructure's VMs | infra |
 |           |              |                              |        |
 
 
