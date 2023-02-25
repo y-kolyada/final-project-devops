@@ -33,6 +33,28 @@
 - TERRAFORM_HOST=terraform.ygorod.com
 - TERRAFORM_PATH=devops/final-project-devops/terraform
 
+
+## Jenkins controller and agents
+
+| Name      | Type         | Short | Labels                       |
+|:----------|:------------:|:-----:|:-----------------------------|
+| jenkins   | controller   | JN    | vagrant                      |
+| terraform | agent        | TE    | ansible, centos, java, linux |
+| jagent1   | agent        | A1    | ansible, centos, java, linux |
+|           |              |       |                              |
+
+
+## Main pipelines
+
+
+Prerequisites:
+
+1. [VM should be created](#Jenkins-controller-and-agents)
+2. Agents should be created and configured
+3. DevOps defaults settings should be configured
+
+
+
 ## Jenkinsfiles on GitHub
 
 - [build-devopskb-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-devopskb-dev/Jenkinsfile)
@@ -43,11 +65,22 @@
 - [ansible-init-devops](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-devops/Jenkinsfile), see TO DO 2
 
 
-## Devops Environment
+## Devops Infrastructure
+
+See the "infra" view in the Jenkins GUI.
 
 ### Vagrant Jobs
 
-- [vagrant-status-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-status-all.sh)
+| Job name  | Label        | Job Descriptions             | View   |
+|:----------|:------------:|:-----------------------------|:-------|
+| [vagrant-status-all](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-status-all/Jenkinsfile) | vagrant | vagrant gets the status of all VMs | infra |
+| [vagrant-up-new](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins/vagrant-up-new) | vagrant | first time "up" will create a new VM or "up" existing VM and update the System | infra |
+| [vagrant-up-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-one/Jenkinsfile) | vagrant | vagrant "up" one VM | infra |
+| [vagrant-up-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-infrastructure.sh) | vagrant | vagrant "up" infrastructure's VMs | infra |
+| [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh) | vagrant | vagrant "up" developer's VMs | infra |
+|           |              |                              |        |
+
+
 - [vagrant-up-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-all.sh)
 - [vagrant-up-integration](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-integration.sh)
 - [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh)
