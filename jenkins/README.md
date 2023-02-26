@@ -45,9 +45,10 @@
 
 ## Main pipelines
 
+
 Prerequisites:
 
-1. VM should be created
+1. VMs should be configured in Vagrantfile
 2. Agents should be created and configured
 3. DevOps defaults settings should be configured
 
@@ -108,6 +109,16 @@ See the "dev" view in the Jenkins GUI.
 | 9  | Jenkins       | job          | build-app-qa             | auto or manually | from cd-prod-local |
 | 10 | Jenkins       | job          | cd-prod-aws              | auto or manually | H(0-10) 23 * * *   |
 | 11 | Jenkins       | job          | terraform-deploy-prodaws | auto or manually | from cd-prod-aws   |
+
+
+## DevOps supporting pipelines
+
+
+Prerequisites:
+
+1. VMs should be configured in Vagrantfile
+2. jenkins user should be configured on the agent
+3. FINAL_PROJECT_DEVOPS_HOME variable should be configured on the host(h3), terraform
 
 
 ### Vagrant Status/Up/Halt Jobs
