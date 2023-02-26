@@ -8,7 +8,7 @@
 // - build-app-prod job
 // - terraform-deploy-prodaws job
 
-node {
+node("centos") {
     def u = env.DEVOPS
     def h = env.VG_HOST
     def o = env.SSH_OPTIONS

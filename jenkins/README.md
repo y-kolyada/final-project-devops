@@ -76,11 +76,37 @@ Prerequisites:
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
 | [cd-prod-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-aws/Jenkinsfile) | centos | deploy from terraform (bin from PREPROD) on AWS PROD env | ci-cd | Jenkinsfile |  |
-| [terraform-deploy-prodaws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/terraform-deploy-prodaws/Jenkinsfile) | terraform | CI on DEV & QA, delivery to local PREPROD, and deployment to AWS PROD env | ci-cd | Jenkinsfile |  |
-| [ci-cd-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-cd-aws/Jenkinsfile) | terraform | CI on DEV & QA, delivery to local PREPROD, and deployment to AWS PROD env | ci-cd | Jenkinsfile |  |
+| [terraform-deploy-prodaws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/terraform-deploy-prodaws/Jenkinsfile) | terraform | copy and run the app on AWS PROD env | ci-cd | Jenkinsfile |  |
+| [ci-cd-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-cd-aws/Jenkinsfile) | centos | CI on DEV & QA, delivery to local PREPROD, and deployment to AWS PROD env | ci-cd | Jenkinsfile |  |
 |           |              |                              |        |        |        |
 
-### Continuous Deployment pipelines
+
+### Main pipeline job dependencies
+
+| #  | Job/Tool name | Initiated by | Job or Activity          | How              | When      |
+|:--:|:--------------|:------------:|:-------------------------|:----------------:|:---------:|
+| 1  | VS Code       | git push     | developer                | manually         | on demand |
+| 2  | GitHub        | webhook      | service                  | auto             | on demand |
+| 3  | Jenkins       | job          | gitwebhook-dev-local     | auto or manually | on demand |
+| 4  | Jenkins       | job          | ci-dev-local             | auto or manually | trigger aft build-app-qa |
+| 5  | Jenkins       | job          | build-app-dev            | auto or manually | from ci-dev-local  |
+| 6  | Jenkins       | job          | ci-qa-local              | auto or manually | H(0-10) 8,12,16 * * *    |
+| 7  | Jenkins       | job          | build-app-qa             | auto or manually | from ci-qa-local   |
+| 8  | Jenkins       | job          | cd-prod-local            | auto or manually | trigger aft build-app-qa |
+| 9  | Jenkins       | job          | build-app-qa             | auto or manually | from cd-prod-local |
+| 10 | Jenkins       | job          | cd-prod-aws              | auto or manually | H(0-10) 23 * * *   |
+| 11 | Jenkins       | job          | terraform-deploy-prodaws | auto or manually | from cd-prod-aws   |
+
+
+### Developer's pipelines
+
+| Job name  | Commetns        |
+|:----------|:----------------|
+| [build-app-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-dev-local/Jenkinsfile) | [see Continuous Integration pipelines](#Continuous-Integration-pipelines) |
+| [build-app-qa](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-qa/Jenkinsfile) | [see Continuous Integration pipelines](#Continuous-Integration-pipelines) |
+| [ci-dev-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-dev-local/Jenkinsfile) | [see Continuous Integration pipelines](#Continuous-Integration-pipelines) |
+| [ci-qa-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-qa-local/Jenkinsfile) | [see Continuous Integration pipelines](#Continuous-Integration-pipelines) |
+
 
 ## DevOps Infrastructure
 
