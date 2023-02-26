@@ -28,20 +28,21 @@ According to Amazon's vision, DevOps Practices are:
 
 ### Software Vendors & Licensing
 
-1. [CentOS Stream 8 - 4.18.0-448, GNU GPL](https://www.centos.org/centos-stream/)
-2. [VirtualBox 7.0.6, GNU GPL 2](https://www.virtualbox.org/)
-3. [Vagrant 2.3.4, MIT](https://developer.hashicorp.com/vagrant)
-4. [Terraform 1.3.9, Mozilla PL 2.0](https://www.terraform.io/)
-5. [AWS CLI 2.9.23, Apache PL 2.0](https://www.ansible.com/)
-6. [Bind9 9.11.36, Mozilla PL 2.0](https://www.isc.org/)
-7. [Git 2.39.1, GNU GPL 2](https://git-scm.com/)
-8. [Ansible 2.14.2, GNU GPL 3](https://www.ansible.com/)
-9. [Jenkins 2.375.2, MIT](https://www.jenkins.io/)
-10. [Python 3.9.16, Python SFL](https://www.python.org/)
-11. [Java openjdk 17.0.6, GNU GPL 2](https://openjdk.org/)
-12. [Maven 3.5.4, ASL 2.0 and MIT](https://maven.apache.org/)
-13. [Spring 3.0.2, Apache PL 2.0](https://spring.io/)
-14. [Visual Studio Code 1.75.1, https://code.visualstudio.com/license](https://code.visualstudio.com/)
+1. **CEN** - [CentOS Stream 8 - 4.18.0-448, GNU GPL](https://www.centos.org/centos-stream/)
+2. **VBO** - [VirtualBox 7.0.6, GNU GPL 2](https://www.virtualbox.org/)
+3. **VAG** - [Vagrant 2.3.4, MIT](https://developer.hashicorp.com/vagrant)
+4. **TER** - [Terraform 1.3.9, Mozilla PL 2.0](https://www.terraform.io/)
+5. **EC2** - [AWS CLI 2.9.23, Apache PL 2.0](https://www.ansible.com/)
+6. **BIN** - [Bind9 9.11.36, Mozilla PL 2.0](https://www.isc.org/)
+7. **GIT** - [Git 2.39.1, GNU GPL 2](https://git-scm.com/)\
+8. **GHU** - [GitHub, Propriatory](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
+9. **ANS** - [Ansible 2.14.2, GNU GPL 3](https://www.ansible.com/)
+10. **JEN** - [Jenkins 2.375.2, MIT](https://www.jenkins.io/)
+11. **PYT** - [Python 3.9.16, Python SFL](https://www.python.org/)
+12. **JAV** - [Java openjdk 17.0.6, GNU GPL 2](https://openjdk.org/)
+13. **MAV** - [Maven 3.5.4, ASL 2.0 and MIT](https://maven.apache.org/)
+14. **SPR** - [Spring 3.0.2, Apache PL 2.0](https://spring.io/)
+15. **COD** - [Visual Studio Code 1.75.1, https://code.visualstudio.com/license](https://code.visualstudio.com/)
 
 
 ## Infrastructure
@@ -53,8 +54,8 @@ According to Amazon's vision, DevOps Practices are:
 |:---------|:------------:|:--------------:|:--------------|:--------------------------:|:-----:|:-----:|:-------:|
 | local    | ITX desktop  | AMD-V          | h3            | AMD Ryzen 5 PRO 2400GE x4  | 64GB  | 1TB   | xfs     |
 | local    | VirtualBox   | oracle         | jenkins       | vCPU x2 AuthenticAMD       | 3GB   | 12GB  | xfs     |
-| local    | VirtualBox   | oracle         | jagent1       | vCPU x2 AuthenticAMD       | 1GB   | 10GB  | xfs     |
 | local    | VirtualBox   | oracle         | terraform     | vCPU x2 AuthenticAMD       | 2GB   | 10GB  | xfs     |
+| local    | VirtualBox   | oracle         | jagent1       | vCPU x2 AuthenticAMD       | 1GB   | 10GB  | xfs     |
 | local    | VirtualBox   | oracle         | dev           | vCPU x2 AuthenticAMD       | 3GB   | 10GB  | xfs     |
 | local    | VirtualBox   | oracle         | qa            | vCPU x2 AuthenticAMD       | 2GB   | 10GB  | xfs     |
 | local    | VirtualBox   | oracle         | prod (preprod)| vCPU x2 AuthenticAMD       | 1.5GB | 10GB  | xfs     |
@@ -64,22 +65,30 @@ According to Amazon's vision, DevOps Practices are:
 |          |              |                |               |                            |       |       |         |
 
 
-## Infrastructure Components
+## Infrastructure Component matrix
 
-- [Vagrant & VirtualBox](https://github.com/y-kolyada/final-project-devops/tree/main/vagrant)
-- [Terraform & AWS](https://github.com/y-kolyada/final-project-devops/tree/main/terraform)
-- [CentOS & Bash](https://github.com/y-kolyada/final-project-devops/tree/main/bash)
-- [Ansible & Python](https://github.com/y-kolyada/final-project-devops/tree/main/ansible)
-- [Jenkins](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins)
-- [Java, Spring, Maven & Code](https://github.com/y-kolyada/devopskb)
+CEN VBO VAG TER EC2 BIN GIT GHU ANS JEN PYT JAV MAV SPR COD
 
+| Environment   | CEN | VBO | VAG | TER | EC2 | BND | GIT | GHU | ANS | JEN | PYT | JAV | MAV | SPR | COD |
+|:------------- |:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|:---:|
+| h3            |  +  |  +  |  +  |     |     |  +  |  +  |  +  |  +  |     |  +  |     |     |     |     |  
+| jenkins       |  +  |     |     |     |     |     |  +  |  +  |     |  +  |  +  |  +  |     |     |     |
+| terraform     |  +  |     |     |  +  |  +  |     |  +  |  +  |  +  |  +  |  +  |  +  |     |     |     |
+| jagent1       |  +  |     |     |     |     |     |  +  |  +  |  +  |  +  |  +  |  +  |     |     |     |
+| dev           |  +  |     |     |     |     |     |  +  |  +  |     |     |  +  |  +  |  +  |  +  |     |
+| qa            |  +  |     |     |     |     |     |  +  |  +  |     |     |  +  |  +  |  +  |  +  |     |
+| preprod       |  +  |     |     |     |     |     |  +  |  +  |     |     |  +  |  +  |  +  |  +  |     |
+| prod-devopskb |  +  |     |     |     |     |     |  +  |  +  |     |     |  +  |  +  |     |     |     |
+| dev001        |  +  |     |     |     |     |     |  +  |  +  |     |     |  +  |  +  |  +  |  +  |  +  |
+| qa001         |  +  |     |     |     |     |     |  +  |  +  |     |     |  +  |  +  |  +  |  +  |  +  |
+|               |     |     |     |     |     |     |     |     |     |     |     |     |     |     |     |
 
 ## Environments
 
-- DEV, development environment on VM "dev"
-- QA, test environment on VM "qa"
-- PREPROD, pre-production environment on local VM "prod"
-- PROD, production environment on AWS EC2 VM "prod-devopskb"
+- **DEV**, development environment on VM "dev"
+- **QA**, test environment on VM "qa"
+- **PREPROD**, pre-production environment on local VM "prod"
+- **PROD**, production environment on AWS EC2 VM "prod-devopskb"
 
 
 ## Jenkins
