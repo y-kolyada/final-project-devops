@@ -1,0 +1,35 @@
+// cd-prod-local
+// ver 1.0.0
+// date: 2023-02-20
+
+// Prerequisites:
+// - build-app-prod job
+
+node("java") {
+    def u = env.DEVOPS
+    def h = env.VG_HOST
+    def o = env.SSH_OPTIONS
+    def home = env.VG_PATH
+    def envName = ""
+
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+
+        sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+
+        envName = "terraform"
+        echo "Parameter: ${envName}"
+    }
+    
+    stage('CD on local PREPROD') {
+        echo 'CD on local PREPROD...'
+        
+        build job:'build-app-prod', wait: true
+        
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}

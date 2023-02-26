@@ -56,10 +56,10 @@ Prerequisites:
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
-| [build-app-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-dev/Jenkinsfile) | java | build a java app and run it on the local DEV env | ci | Jenkinsfile |  |
 | [ci-dev-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-dev-local/Jenkinsfile) | centos | CI on the "dev" branch of the DEV env | ci | Jenkinsfile |  |
-| [build-app-qa](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-qa/Jenkinsfile) | java | build a java app and test it on the local QA env | ci | Jenkinsfile |  |
+| [build-app-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-dev/Jenkinsfile) | java | build a java app and run it on the local DEV env | ci | Jenkinsfile |  |
 | [ci-qa-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-qa-local/Jenkinsfile) | centos | CI on the "qa" branch of the QA environment | ci | Jenkinsfile |  |
+| [build-app-qa](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-qa/Jenkinsfile) | java | build a java app and test it on the local QA env | ci | Jenkinsfile |  |
 | [gitwebhook-dev-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-qa-local/Jenkinsfile) |  | git webhook to trigger CI | ci | GitHub hook |  |
 |           |              |                              |        |        |        |
 
@@ -67,7 +67,9 @@ Prerequisites:
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
-| [build-app-prod](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-dev/Jenkinsfile) | java | build a java app and run it on the local DEV env | ci | Jenkinsfile |  |
+| [cd-prod-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-local/Jenkinsfile) | java | CD from the "main" branch and delivery to the PREPROD env | cd | Jenkinsfile |  |
+| [build-app-prod](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-prod/Jenkinsfile) | java | build a java app and run it on the local PREPROD env | cd | Jenkinsfile |  |
+| [cd-prod-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-aws/Jenkinsfile) | java | CD from the "main" branch and delivery to the PREPROD env | cd | Jenkinsfile |  |
 |           |              |                              |        |        |        |
 
 ### Continuous Deployment pipelines
