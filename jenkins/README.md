@@ -75,9 +75,9 @@ Prerequisites:
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
-
-| [cd-prod-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-aws/Jenkinsfile) | centos | deploy from terraform (bin from PREPROD) on AWS PROD env | cd | Jenkinsfile |  |
-| [terraform-deploy-prodaws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/terraform-deploy-prodaws/Jenkinsfile) | terraform | copy and run the app on AWS PROD env | cd | bash |  |
+| [cd-prod-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-aws/Jenkinsfile) | centos | deploy from terraform (bin from PREPROD) on AWS PROD env | ci-cd | Jenkinsfile |  |
+| [terraform-deploy-prodaws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/terraform-deploy-prodaws/Jenkinsfile) | terraform | CI on DEV & QA, delivery to local PREPROD, and deployment to AWS PROD env | ci-cd | Jenkinsfile |  |
+| [ci-cd-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-cd-aws/Jenkinsfile) | terraform | CI on DEV & QA, delivery to local PREPROD, and deployment to AWS PROD env | ci-cd | Jenkinsfile |  |
 |           |              |                              |        |        |        |
 
 ### Continuous Deployment pipelines

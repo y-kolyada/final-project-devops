@@ -1,0 +1,65 @@
+// ci-cd-aws
+// ver 1.0.2
+// date: 2023-02-22
+
+// Prerequisites:
+// - build-app-dev job
+// - build-app-qa job
+// - build-app-prod job
+// - terraform-deploy-prodaws job
+
+node {
+    def u = env.DEVOPS
+    def h = env.VG_HOST
+    def o = env.SSH_OPTIONS
+    def home = env.VG_PATH
+    def envName = ""
+
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+
+        sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+
+        envName = "terraform"
+        echo "Parameter: ${envName}"
+        
+        h = env.VG_HOST
+
+        // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
+        //sh "ssh -o ${o} ${u}@${h} hostnamectl; df -Th /; uptime; \
+        //    last | grep '' -m3"
+        
+        //sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+        //    vagrant status ${envName}'"
+    }
+    
+    stage('CI on local DEV') {
+        echo 'CI on local DEV...'
+        
+        build job:'build-app-dev', wait: true
+    }
+    
+    stage('CI on local QA') {
+        echo 'CI on local QA...'
+        
+        build job:'build-app-qa', wait: true
+    }    
+    
+    stage('CD on local PREPROD') {
+        echo 'CD on local PREPROD...'
+        
+        build job:'build-app-prod', wait: true
+    }
+    
+    stage('CD on AWS PROD') {
+        echo 'CD on AWS PROD...'
+        
+        build job:'terraform-deploy-prodaws', wait: true
+
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
