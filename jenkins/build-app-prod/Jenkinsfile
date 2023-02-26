@@ -1,0 +1,197 @@
+// build-app-prod
+// ver 1.0.2
+// date: 2023-02-22
+
+pipeline{
+    agent {
+        label "java"
+    }
+    
+    parameters{
+        string(name: 'TAG', description: 'Please enter a tag to create an application based on it.', trim: true)
+    }
+    
+    environment {
+        HOST = ""
+    }
+    
+    stages {
+
+        stage('Init') {
+            when {
+                expression { env.ENV == 'PROD' }
+            }
+            steps {
+                echo "Jenkins agent info:"
+                withCredentials([sshUserPrivateKey(credentialsId: 'devops-id-rsa', keyFileVariable: 'keyFile', 
+                    passphraseVariable: 'passphrase', usernameVariable: 'username')]) {
+                    sh 'hostnamectl'
+                    sh 'df -Th /'
+                }
+                
+                echo "params.TAG: ${params.TAG}"
+                echo "--- ${JOB_NAME} ---"
+                sh 'echo "JOB_START: $(date)"'
+                
+                echo "ENV: ${ENV}"
+                echo "BUILD_NUMBER: ${env.BUILD_NUMBER}"
+                script {
+                    def host = ""
+                    echo "TAG: $TAG"
+
+                    if (env.ENV == "PROD") {
+                        withEnv(["HOST=${PREPROD_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else {
+                        echo "Please define value for ENV variable!"
+                        sh 'exit 1'
+                    }
+                    
+                    withEnv(["HOST=${host}"]) {
+                        sh 'echo "DEVOPS_USER@HOST: ${DEVOPS_USER}@${HOST}"'
+                        sh "ssh -o ${SSH_OPTIONS} ${DEVOPS_USER}@${HOST} 'hostnamectl; \
+                            pwd; echo \"TAG: ${TAG}\"; \
+                            cd ${PROJECT_PATH}; \
+                            [ -z ${TAG} ] && echo \"Pull src from integ branch...\"; \
+                            [ -z ${TAG} ] && git checkout integ; \
+                            [ -z ${TAG} ] && git pull; \
+                            [ -z ${TAG} ] && echo \"Merge integ into main...\"; \
+                            [ -z ${TAG} ] && git checkout main; \
+                            [ -z ${TAG} ] && git merge integ; \
+                            [ -z ${TAG} ] || echo \"Pull src from tag...\"; \
+                            [ -z ${TAG} ] || git checkout ${TAG}; \
+                            [ -z ${TAG} ] || git branch -D tagbranch; \
+                            [ -z ${TAG} ] || git checkout -b tagbranch; \
+                            [ -z ${TAG} ] || git merge -s ours main; \
+                            [ -z ${TAG} ] || git commit -am \"updated main with tag \${TAG}\"; \
+                            [ -z ${TAG} ] || git checkout main; \
+                            [ -z ${TAG} ] || git merge tagbranch; \
+                            git push' \
+                        "
+                        sh "ssh -o ${SSH_OPTIONS} ${DEVOPS_USER}@${HOST} 'cd ${PROJECT_PATH}; mvn clean'"
+                    }
+                }
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                   def host = ""
+                   if (env.ENV == "PROD") {
+                        withEnv(["HOST=${PREPROD_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else {
+                        echo "Please define value for ENV variable!"
+                        sh 'exit 1'
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn compile"'
+                    }
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    def host = ""
+                    if (env.ENV == "PROD") {
+                        withEnv(["HOST=${PREPROD_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else {
+                        echo "Please define value for ENV variable!"
+                        sh 'exit 1'
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn test"'
+                    }
+                }
+            }
+        }
+        
+        stage('Push artifacts') {
+            steps {
+                script {
+                    def host = ""
+                    def app = env.APP
+                    if (env.ENV == "PROD") {
+                        withEnv(["HOST=${PREPROD_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else {
+                        echo "Please define value for ENV variable!"
+                        sh 'exit 1'
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        echo 'Building package...'
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; mvn package"'
+                            
+                        echo 'Tag package...'
+                        echo "tag: ${VER_PROD}.${BUILD_NUMBER}"
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; git tag ${VER_PROD}.${BUILD_NUMBER}; git push --tags"'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to PREPROD') {
+            steps {
+                script {
+                    def host = ""
+                    def app = env.APP
+
+                    if (env.ENV == "PROD") {
+                        withEnv(["HOST=${PREPROD_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else {
+                        echo "Please define value for ENV variable!"
+                        sh 'exit 1'
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh 'echo "Copy package..."'
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}; pwd; cp ./target/${APP}.jar ./bin/"'
+                        
+                        echo 'Stopping app if running...'
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_stopapp_localdev.sh"'
+                        echo 'Running builded app...'
+                        sh 'ssh -o "${SSH_OPTIONS}" ${DEVOPS_USER}@${HOST} "cd ${PROJECT_PATH}/bash; ./jenkins_runapp_localdev.sh"'
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Terraform') {
+            steps {
+                script {
+                    def u = env.DEVOPS_USER
+                    def host_i = env.ANSIBLE_HOST
+                    def host_q = env.QA_HOST
+                    def o = env.SSH_OPTIONS
+                    def p_path = env.PROJECT_PATH
+                    def i_path = env.DEVOPS_PROJECT_PATH
+                    def app = env.APP
+                    
+                    sshagent (credentials: ['devops-id-rsa']) {
+                        sh "ssh -o ${o} -l ${u} ${host_q} 'hostnamectl; df -Th /; uptime; \
+                            last | grep '' -m3; \
+                            scp -o ${o} ${p_path}/target/${app}.jar ${u}@${host_i}:${i_path}/bin/; \
+                            echo \"${app}.jar copied...\"' \
+                        "
+                    }
+                    
+                    sshagent (credentials: ['devops-id-rsa']) {
+                        sh "ssh -o ${o} -l ${u} ${host_i} hostnamectl; df -Th /; uptime; \
+                            last | grep '' -m3 \
+                        "
+                    }
+                }
+                sh 'echo "JOB_FINISH: $(date)"'
+            }
+        }
+     }
+}
