@@ -1,0 +1,81 @@
+// ansible-init-deploy
+// ver 1.0.0
+// date: 2023-02-12
+
+
+node("ansible") {
+    def u = env.DEVOPS_USER
+    def h = env.ANSIBLE_HOST
+    def o = env.SSH_OPTIONS
+    def home = env.ANSIBLE_PATH
+    def devops_home = env.DEVOPS_PROJECT_PATH
+    def envName = ""
+
+    properties([
+        parameters([
+            choice(choices: ['terraform', 'jenkins', 'gitlab', 'jclient1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            description: 'Select a VM to deploy Java and Docker.', name: 'ENV_NAME')
+        ])
+    ])
+
+    stage('Init') {
+        echo "--- ${JOB_NAME} ---"
+        sh 'echo "JOB_START: $(date)"'
+
+        echo "DEVOPS_USER: ${u}"
+        echo "HOST: ${h}"
+        
+        echo "ANSIBLE_HOST: ${h}"
+        
+        envName = params.ENV_NAME
+
+        // sh 'ssh -o ${SSH_OPTIONS} ${VG_USER}@${VG_HOST} "hostnamectl"'
+        sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+    }
+    
+    stage('Deploy java') {
+        echo 'Deploy java...'
+        
+        //sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+        //    ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
+        //"
+        
+        sshagent (credentials: ['devops-id-rsa']) {
+            sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"'"
+        }
+        echo 'java installed...'
+    }
+
+    stage('Deploy docker') {
+        echo 'Deploy docker...'
+
+        sshagent (credentials: ['devops-id-rsa']) {
+            sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            ansible-playbook deploy_docker.yml -e \"host_or_group=${envName}\"'"
+        }
+        echo 'docker installed...'
+    }
+    
+    stage('Deploy terraform') {
+        echo 'Deploy terraform...'
+        
+        sshagent (credentials: ['devops-id-rsa']) {
+            sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            ansible-playbook deploy_terraform.yml -e \"host_or_group=${envName}\"'"
+        }
+        echo 'terraform installed...'
+    }
+
+    stage('Deploy aws cli') {
+        echo 'Deploy aws cli...'
+        
+        sshagent (credentials: ['devops-id-rsa']) {
+            sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+            ansible-playbook deploy_awscli.yml -e \"host_or_group=${envName}\"'"
+        }
+        echo 'aws cli installed...'
+        
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
