@@ -41,18 +41,19 @@
 | jenkins   | controller   | JE    | vagrant                      |
 | terraform | agent        | TE    | ansible, centos, java, linux |
 | jagent1   | agent        | A1    | ansible, centos, java, linux |
-|           |              |       |                              |
 
 
 ## Main pipelines
 
 Prerequisites:
 
-1. [VM should be created](#Jenkins-controller-and-agents)
+1. VM should be created
 2. Agents should be created and configured
 3. DevOps defaults settings should be configured
 
 ### Continuous Integration pipelines
+
+See the "ci" view in the Jenkins GUI.
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
@@ -61,25 +62,36 @@ Prerequisites:
 | [ci-qa-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-qa-local/Jenkinsfile) | centos | CI on the "qa" branch of the QA environment | ci | Jenkinsfile |  |
 | [build-app-qa](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-qa/Jenkinsfile) | java | build a java app and test it on the local QA env | ci | Jenkinsfile |  |
 | [gitwebhook-dev-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-qa-local/Jenkinsfile) |  | git webhook to trigger CI | ci | GitHub hook |  |
-|           |              |                              |        |        |        |
 
 ### Continuous Delivery pipelines
+
+See the "cd" view in the Jenkins GUI.
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
 | [cd-prod-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-local/Jenkinsfile) | centos | CD from the "main" branch and delivery to the PREPROD env | cd | Jenkinsfile |  |
 | [build-app-prod](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-prod/Jenkinsfile) | java | build a java app and run it on the local PREPROD env | cd | Jenkinsfile |  |
-|           |              |                              |        |        |        |
 
 ### Continuous Deployment pipelines
+
+See the "ci-cd" view in the Jenkins GUI.
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
 | [cd-prod-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-aws/Jenkinsfile) | centos | deploy from terraform (bin from PREPROD) on AWS PROD env | ci-cd | Jenkinsfile |  |
 | [terraform-deploy-prodaws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/terraform-deploy-prodaws/Jenkinsfile) | terraform | copy and run the app on AWS PROD env | ci-cd | Jenkinsfile |  |
 | [ci-cd-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-cd-aws/Jenkinsfile) | centos | CI on DEV & QA, delivery to local PREPROD, and deployment to AWS PROD env | ci-cd | Jenkinsfile |  |
-|           |              |                              |        |        |        |
 
+### Developer's pipelines
+
+See the "dev" view in the Jenkins GUI.
+
+| Job name  | Commetns        | View   |
+|:----------|:----------------|:-------|
+| [build-app-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-dev-local/Jenkinsfile) | see [Continuous Integration pipelines](#Continuous-Integration-pipelines) | dev |
+| [build-app-qa](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-qa/Jenkinsfile) | see [Continuous Integration pipelines](#Continuous-Integration-pipelines) | dev |
+| [ci-dev-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-dev-local/Jenkinsfile) | see [Continuous Integration pipelines](#Continuous-Integration-pipelines) | dev |
+| [ci-qa-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-qa-local/Jenkinsfile) | see [Continuous Integration pipelines](#Continuous-Integration-pipelines) | dev |
 
 ### Main pipeline job dependencies
 
@@ -98,21 +110,9 @@ Prerequisites:
 | 11 | Jenkins       | job          | terraform-deploy-prodaws | auto or manually | from cd-prod-aws   |
 
 
-### Developer's pipelines
-
-| Job name  | Commetns        |
-|:----------|:----------------|
-| [build-app-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-dev-local/Jenkinsfile) | [see Continuous Integration pipelines](#Continuous-Integration-pipelines) |
-| [build-app-qa](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-qa/Jenkinsfile) | [see Continuous Integration pipelines](#Continuous-Integration-pipelines) |
-| [ci-dev-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-dev-local/Jenkinsfile) | [see Continuous Integration pipelines](#Continuous-Integration-pipelines) |
-| [ci-qa-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-qa-local/Jenkinsfile) | [see Continuous Integration pipelines](#Continuous-Integration-pipelines) |
-
-
-## DevOps Infrastructure
+### Vagrant Status/Up/Halt Jobs
 
 See the "infra" view in the Jenkins GUI.
-
-### Vagrant Status/Up/Halt Jobs
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
@@ -126,10 +126,10 @@ See the "infra" view in the Jenkins GUI.
 | [vagrant-halt-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-infrastructure.sh) |  | vagrant "halt" infrastructure's VMs | infra | Bash |  |
 | [vagrant-halt-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-developers.sh) |  | vagrant "halt" developer's VMs | infra | Bash |  |
 | [vagrant-halt-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-all.sh) | | vagrant "halt" all VMs | infra | Bash |  |
-|           |              |                              |        |        |        |
-
 
 ### Operating System Jobs
+
+See the "infra" view in the Jenkins GUI.
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
@@ -137,10 +137,10 @@ See the "infra" view in the Jenkins GUI.
 | [vagrant-update-kernel](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-kernel/Jenkinsfile) | vagrant | vagrant kernel update with the reboot | infra | Jenkinsfile | ENV_NAME |
 | [vagrant-reboot-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-reboot-one/Jenkinsfile) | vagrant | vagrant reboot one VM | infra | Jenkinsfile | ENV_NAME |
 | [linux-restart-chronyd](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/linux-restart-chronyd/Jenkinsfile) | ansible | restart chronyd on all infrastructure | infra | Jenkinsfile |  |
-|           |              |                              |        |        |        |
 
+### Infastructure initiation Jobs
 
-### Infastructure Jobs
+See the "infra" view in the Jenkins GUI.
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
@@ -149,19 +149,22 @@ See the "infra" view in the Jenkins GUI.
 | [ansible-init-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-dev/Jenkinsfile) | ansible | init Dev environment by Ansible | infra | Jenkinsfile | ENV_NAME |
 | [ansible-init-deploy](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-deploy/Jenkinsfile) | ansible | init Java and Docker Deploy by Ansible | infra | Jenkinsfile | ENV_NAME |
 | [ansible-init-agent](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-agent/Jenkinsfile) | ansible | install Ansible, Git on the Jenkins agent | infra | Jenkinsfile | ENV_NAME |
-|           |              |                              |        |        |        |
 
 
-## Developers Environment
+## Infrastructure Components
 
-### Pipieline Jobs to build App 
-#### Local DEV Environment
+- [Vagrant & VirtualBox](https://github.com/y-kolyada/final-project-devops/tree/main/vagrant)
+- [Terraform & AWS](https://github.com/y-kolyada/final-project-devops/tree/main/terraform)
+- [CentOS & Bash](https://github.com/y-kolyada/final-project-devops/tree/main/bash)
+- [Ansible & Python](https://github.com/y-kolyada/final-project-devops/tree/main/ansible)
+- [Jenkins](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins)
+- [Java & Spring & Maven & Code](https://github.com/y-kolyada/devopskb)
 
-- [build-devopskb-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-devopskb-dev/Jenkinsfile)
-- [jenkins_runapp_localdev.sh](https://github.com/y-kolyada/devopskb/blob/main/bash/jenkins_runapp_localdev.sh)
-- [jenkins_stopapp_localdev.sh](https://github.com/y-kolyada/devopskb/blob/main/bash/jenkins_stopapp_localdev.sh)
 
 ## TO DO
 
-1. Remove key operations into Key Deployment Center
-2. Automatically configure git config for the user
+1. Refactor jenkins pipeline code
+2. Implement email notification of bugs during testing
+3. Develop and test delivery and deployment strategies
+4. Roll out Jenkins pipelines on a real project in a test environment
+5. Remove key operations into Key Deployment Center

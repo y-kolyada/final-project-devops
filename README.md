@@ -70,6 +70,11 @@ According to Amazon's vision, DevOps Practices are:
 3. [Maven](https://github.com/y-kolyada/devopskb/blob/main/pom.xml)
 
 
+## Infrastructure Components
+
+## Environments
+
+
 ## Jenkins
 
 ### Jenkins main pipelines
