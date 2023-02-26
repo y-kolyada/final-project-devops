@@ -65,8 +65,17 @@ According to Amazon's vision, DevOps Practices are:
 |          |              |                |               |                            |       |       |         |
 
 
-## Infrastructure Component matrix
+## Infrastructure Components
 
+
+- [VirtualBox & Vagrant](https://github.com/y-kolyada/final-project-devops/tree/main/vagrant)
+- [Terraform & AWS](https://github.com/y-kolyada/final-project-devops/tree/main/terraform)
+- [CentOS & Bash](https://github.com/y-kolyada/final-project-devops/tree/main/bash)
+- [Ansible & Python](https://github.com/y-kolyada/final-project-devops/tree/main/ansible)
+- [Jenkins](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins)
+- [Java, Spring, Maven & Code](https://github.com/y-kolyada/devopskb)
+
+Component matrix:
 
 ![Component matrix](/docs/doc_component_matrix_1.png)
 
