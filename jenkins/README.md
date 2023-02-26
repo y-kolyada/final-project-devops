@@ -67,9 +67,17 @@ Prerequisites:
 
 | Job name  | Label        | Job Descriptions             | View   | Source | Params |
 |:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
-| [cd-prod-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-local/Jenkinsfile) | java | CD from the "main" branch and delivery to the PREPROD env | cd | Jenkinsfile |  |
+| [cd-prod-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-local/Jenkinsfile) | centos | CD from the "main" branch and delivery to the PREPROD env | cd | Jenkinsfile |  |
 | [build-app-prod](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-prod/Jenkinsfile) | java | build a java app and run it on the local PREPROD env | cd | Jenkinsfile |  |
-| [cd-prod-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-aws/Jenkinsfile) | java | CD from the "main" branch and delivery to the PREPROD env | cd | Jenkinsfile |  |
+|           |              |                              |        |        |        |
+
+### Continuous Deployment pipelines
+
+| Job name  | Label        | Job Descriptions             | View   | Source | Params |
+|:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
+
+| [cd-prod-aws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/cd-prod-aws/Jenkinsfile) | centos | deploy from terraform (bin from PREPROD) on AWS PROD env | cd | Jenkinsfile |  |
+| [terraform-deploy-prodaws](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/terraform-deploy-prodaws/Jenkinsfile) | terraform | copy and run the app on AWS PROD env | cd | bash |  |
 |           |              |                              |        |        |        |
 
 ### Continuous Deployment pipelines
