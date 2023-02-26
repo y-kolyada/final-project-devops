@@ -82,7 +82,7 @@ According to Amazon's vision, DevOps Practices are:
 
 ### Jenkins main pipelines
 
-![Jenkins main pipelines](/docs/jenkins_main_pipelines_1.png)
+![Jenkins main pipelines](/docs/doc_jenkins_main_pipelines_1.png)
 
 
 ## TO DO (future improvements)
