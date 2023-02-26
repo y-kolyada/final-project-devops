@@ -59,32 +59,27 @@ According to Amazon's vision, DevOps Practices are:
 | local    | VirtualBox   | oracle         | qa            | vCPU x2 AuthenticAMD       | 2GB   | 10GB  | xfs     |
 | local    | VirtualBox   | oracle         | prod (preprod)| vCPU x2 AuthenticAMD       | 1.5GB | 10GB  | xfs     |
 | aws      | ec2          | xen            | prod-devopskb | vCPU x1 GenuineIntel       | 1GB   | 10GB  | xfs     |
+| local    | VirtualBox   | oracle         | dev001        | vCPU x2 AuthenticAMD       | 4GB   | 15GB  | xfs     |
+| local    | VirtualBox   | oracle         | qa001         | vCPU x2 AuthenticAMD       | 4GB   | 15GB  | xfs     |
 |          |              |                |               |                            |       |       |         |
-### Environments
+
+
+## Infrastructure Components
+
+- [Vagrant & VirtualBox](https://github.com/y-kolyada/final-project-devops/tree/main/vagrant)
+- [Terraform & AWS](https://github.com/y-kolyada/final-project-devops/tree/main/terraform)
+- [CentOS & Bash](https://github.com/y-kolyada/final-project-devops/tree/main/bash)
+- [Ansible & Python](https://github.com/y-kolyada/final-project-devops/tree/main/ansible)
+- [Jenkins](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins)
+- [Java, Spring, Maven & Code](https://github.com/y-kolyada/devopskb)
+
+
+## Environments
 
 - DEV, development environment on VM "dev"
 - QA, test environment on VM "qa"
 - PREPROD, pre-production environment on local VM "prod"
 - PROD, production environment on AWS EC2 VM "prod-devopskb"
-
-
-## DevOps architecture components
-
-1. [CentOS Stream 8](https://www.centos.org/centos-stream/)
-2. [Vagrant 2.3.4](https://developer.hashicorp.com/vagrant/downloads)
-3. [Jenkins 2.375.2](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/README.md)
-
-
-## Application architecture components
-
-1. [Red Hat build of OpenJDK 17](https://developers.redhat.com/products/openjdk/download)
-2. [Java source code](https://github.com/y-kolyada/devopskb/tree/main/src/main)
-3. [Maven](https://github.com/y-kolyada/devopskb/blob/main/pom.xml)
-
-
-## Infrastructure Components
-
-## Environments
 
 
 ## Jenkins
