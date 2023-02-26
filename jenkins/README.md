@@ -169,7 +169,7 @@ See the "infra" view in the Jenkins GUI.
 - [CentOS & Bash](https://github.com/y-kolyada/final-project-devops/tree/main/bash)
 - [Ansible & Python](https://github.com/y-kolyada/final-project-devops/tree/main/ansible)
 - [Jenkins](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins)
-- [Java & Spring & Maven & Code](https://github.com/y-kolyada/devopskb)
+- [Java, Spring, Maven & Code](https://github.com/y-kolyada/devopskb)
 
 
 ## TO DO

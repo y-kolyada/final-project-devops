@@ -28,8 +28,20 @@ According to Amazon's vision, DevOps Practices are:
 
 ### Software Vendors & Licensing
 
-1. [CentOS Stream 8, GNU GPL](https://www.centos.org/centos-stream/)
-2. [Vagrant 2.3.4, MIT](https://developer.hashicorp.com/vagrant/downloads)
+1. [CentOS Stream 8 - 4.18.0-448, GNU GPL](https://www.centos.org/centos-stream/)
+2. [VirtualBox 7.0.6, GNU GPL 2](https://www.virtualbox.org/)
+3. [Vagrant 2.3.4, MIT](https://developer.hashicorp.com/vagrant)
+4. [Terraform 1.3.9, Mozilla PL 2.0](https://www.terraform.io/)
+5. [AWS CLI 2.9.23, Apache PL 2.0](https://www.ansible.com/)
+6. [Bind9 9.11.36, Mozilla PL 2.0](https://www.isc.org/)
+7. [Git 2.39.1, GNU GPL 2](https://git-scm.com/)
+8. [Ansible 2.14.2, GNU GPL 3](https://www.ansible.com/)
+9. [Jenkins 2.375.2, MIT](https://www.jenkins.io/)
+10. [Python 3.9.16, Python SFL](https://www.python.org/)
+11. [Java openjdk 17.0.6, GNU GPL 2](https://openjdk.org/)
+12. [Maven 3.5.4, ASL 2.0 and MIT](https://maven.apache.org/)
+13. [Spring 3.0.2, Apache PL 2.0](https://spring.io/)
+14. [Visual Studio Code 1.75.1, https://code.visualstudio.com/license](https://code.visualstudio.com/)
 
 
 ## Infrastructure
