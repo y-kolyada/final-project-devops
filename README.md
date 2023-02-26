@@ -67,21 +67,8 @@ According to Amazon's vision, DevOps Practices are:
 
 ## Infrastructure Component matrix
 
-CEN VBO VAG TER EC2 BIN GIT GHU ANS JEN PYT JAV MAV SPR COD
 
-| Environment   |CEN|VBO|VAG|TER|EC2|BND|GIT|GHU|ANS|JEN|PYT|JAV|MAV|SPR|COD|
-|:--------------|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|:-:|
-| h3            | + | + | + |   |   | + | + | + | + |   | + |   |   |   |   |  
-| jenkins       | + |   |   |   |   |   | + | + |   | + | + | + |   |   |   |
-| terraform     | + |   |   | + | + |   | + | + | + | + | + | + |   |   |   |
-| jagent1       | + |   |   |   |   |   | + | + | + | + | + | + |   |   |   |
-| dev           | + |   |   |   |   |   | + | + |   |   | + | + | + | + |   |
-| qa            | + |   |   |   |   |   | + | + |   |   | + | + | + | + |   |
-| preprod       | + |   |   |   |   |   | + | + |   |   | + | + | + | + |   |
-| prod-devopskb | + |   |   |   |   |   | + | + |   |   | + | + |   |   |   |
-| dev001        | + |   |   |   |   |   | + | + |   |   | + | + | + | + | + |
-| qa001         | + |   |   |   |   |   | + | + |   |   | + | + | + | + | + |
-|               |   |   |   |   |   |   |   |   |   |   |   |   |   |   |   |
+![Component matrix](/docs/doc_component_matrix_1.png)
 
 ## Environments
 
