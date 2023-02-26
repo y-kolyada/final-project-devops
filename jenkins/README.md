@@ -38,7 +38,7 @@
 
 | Name      | Type         | Short | Labels                       |
 |:----------|:------------:|:-----:|:-----------------------------|
-| jenkins   | controller   | JN    | vagrant                      |
+| jenkins   | controller   | JE    | vagrant                      |
 | terraform | agent        | TE    | ansible, centos, java, linux |
 | jagent1   | agent        | A1    | ansible, centos, java, linux |
 |           |              |       |                              |
@@ -46,24 +46,31 @@
 
 ## Main pipelines
 
-
 Prerequisites:
 
 1. [VM should be created](#Jenkins-controller-and-agents)
 2. Agents should be created and configured
 3. DevOps defaults settings should be configured
 
+### Continuous Integration pipelines
 
+| Job name  | Label        | Job Descriptions             | View   | Source | Params |
+|:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
+| [build-app-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-dev/Jenkinsfile) | java | build a java app and run it on the local DEV env | ci | Jenkinsfile |  |
+| [ci-dev-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-dev-local/Jenkinsfile) | centos | CI on the "dev" branch of the DEV env | ci | Jenkinsfile |  |
+| [build-app-qa](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-qa/Jenkinsfile) | java | build a java app and test it on the local QA env | ci | Jenkinsfile |  |
+| [ci-qa-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-qa-local/Jenkinsfile) | centos | CI on the "qa" branch of the QA environment | ci | Jenkinsfile |  |
+| [gitwebhook-dev-local](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ci-qa-local/Jenkinsfile) |  | git webhook to trigger CI | ci | GitHub hook |  |
+|           |              |                              |        |        |        |
 
-## Jenkinsfiles on GitHub
+### Continuous Delivery pipelines
 
-- [build-devopskb-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-devopskb-dev/Jenkinsfile)
-- [vagrant-up-new](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-new/Jenkinsfile)
-- [vagrant-update-system](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-system/Jenkinsfile)
-- [vagrant-update-kernel](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-kernel/Jenkinsfile)
-- [ansible-init-agent](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-agent/Jenkinsfile), see TO DO 1
-- [ansible-init-devops](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-devops/Jenkinsfile), see TO DO 2
+| Job name  | Label        | Job Descriptions             | View   | Source | Params |
+|:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
+| [build-app-prod](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/build-app-dev/Jenkinsfile) | java | build a java app and run it on the local DEV env | ci | Jenkinsfile |  |
+|           |              |                              |        |        |        |
 
+### Continuous Deployment pipelines
 
 ## DevOps Infrastructure
 
