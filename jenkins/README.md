@@ -65,33 +65,49 @@ Prerequisites:
 - [ansible-init-devops](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-devops/Jenkinsfile), see TO DO 2
 
 
-## Devops Infrastructure
+## DevOps Infrastructure
 
 See the "infra" view in the Jenkins GUI.
 
-### Vagrant Jobs
+### Vagrant Status/Up/Halt Jobs
 
-| Job name  | Label        | Job Descriptions             | View   |
-|:----------|:------------:|:-----------------------------|:-------|
-| [vagrant-status-all](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-status-all/Jenkinsfile) | vagrant | vagrant gets the status of all VMs | infra |
-| [vagrant-up-new](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-new/Jenkinsfile) | vagrant | first time "up" will create a new VM or "up" existing VM and update the System | infra |
-| [vagrant-up-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-one/Jenkinsfile) | vagrant | vagrant "up" one VM | infra |
-| [vagrant-up-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-infrastructure.sh) |  | vagrant "up" infrastructure's VMs | infra |
-| [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh) |  | vagrant "up" developer's VMs | infra |
-| [vagrant-up-all](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-all/Jenkinsfile) | vagrant | vagrant "up" all VMs | infra |
-| [vagrant-halt-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-halt-one/Jenkinsfile) | vagrant | vagrant "halt" one VM | infra |
-| [vagrant-halt-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-infrastructure.sh) |  | vagrant "halt" infrastructure's VMs | infra |
-| [vagrant-halt-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-developers.sh) |  | vagrant "halt" developer's VMs | infra |
-| [vagrant-halt-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-all.sh) | vagrant | vagrant "halt" all VMs | infra |
-|           |              |                              |        |
+| Job name  | Label        | Job Descriptions             | View   | Source | Params |
+|:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
+| [vagrant-status-all](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-status-all/Jenkinsfile) | vagrant | vagrant gets the status of all VMs | infra | Jenkinsfile |  |
+| [vagrant-up-new](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-new/Jenkinsfile) | vagrant | first time "up" will create a new VM | infra | Jenkinsfile | ENV_NAME |
+| [vagrant-up-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-one/Jenkinsfile) | vagrant | vagrant "up" one VM | infra | Jenkinsfile | ENV_NAME |
+| [vagrant-up-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-infrastructure.sh) |  | vagrant "up" infrastructure's VMs | infra | Bash |  |
+| [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh) |  | vagrant "up" developer's VMs | infra | Bash |  |
+| [vagrant-up-all](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-up-all/Jenkinsfile) | vagrant | vagrant "up" all VMs | infra | Jenkinsfile |  |
+| [vagrant-halt-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-halt-one/Jenkinsfile) | vagrant | vagrant "halt" one VM | infra | Jenkinsfile | ENV_NAME |
+| [vagrant-halt-infrastructure](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-infrastructure.sh) |  | vagrant "halt" infrastructure's VMs | infra | Bash |  |
+| [vagrant-halt-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-developers.sh) |  | vagrant "halt" developer's VMs | infra | Bash |  |
+| [vagrant-halt-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-all.sh) | | vagrant "halt" all VMs | infra | Bash |  |
+|           |              |                              |        |        |        |
 
 
-- [vagrant-up-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-all.sh)
-- [vagrant-up-integration](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-integration.sh)
-- [vagrant-up-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-up-developers.sh)
-- [vagrant-halt-all](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-all.sh)
-- [vagrant-halt-integration](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-integration.sh)
-- [vagrant-halt-developers](https://github.com/y-kolyada/final-project-devops/blob/main/bash/vagrant-halt-developers.sh)
+### Operating System Jobs
+
+| Job name  | Label        | Job Descriptions             | View   | Source | Params |
+|:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
+| [vagrant-update-system](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-system/Jenkinsfile) | vagrant | vagrant OS update without the reboot | infra | Jenkinsfile | ENV_NAME |
+| [vagrant-update-kernel](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-update-kernel/Jenkinsfile) | vagrant | vagrant kernel update with the reboot | infra | Jenkinsfile | ENV_NAME |
+| [vagrant-reboot-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-reboot-one/Jenkinsfile) | vagrant | vagrant reboot one VM | infra | Jenkinsfile | ENV_NAME |
+| [linux-restart-chronyd](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/linux-restart-chronyd/Jenkinsfile) | ansible | restart chronyd on all infrastructure | infra | Jenkinsfile |  |
+|           |              |                              |        |        |        |
+
+
+### Infastructure Jobs
+
+| Job name  | Label        | Job Descriptions             | View   | Source | Params |
+|:----------|:------------:|:-----------------------------|:-------|:-------|:-------|
+| [ansible-init-devops](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-devops/Jenkinsfile) | ansible | init DevOps environment by Ansible | infra | Jenkinsfile | ENV_NAME |
+| [ansible-adduser-devops](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-adduser-devops/Jenkinsfile) | ansible | add devops user by Ansible | infra | Jenkinsfile | ENV_NAME |
+| [ansible-init-dev](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-dev/Jenkinsfile) | ansible | init Dev environment by Ansible | infra | Jenkinsfile | ENV_NAME |
+| [ansible-init-deploy](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-deploy/Jenkinsfile) | ansible | init Java and Docker Deploy by Ansible | infra | Jenkinsfile | ENV_NAME |
+| [ansible-init-agent](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/ansible-init-agent/Jenkinsfile) | ansible | install Ansible, Git on the Jenkins agent | infra | Jenkinsfile | ENV_NAME |
+|           |              |                              |        |        |        |
+
 
 ## Developers Environment
 
