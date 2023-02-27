@@ -106,8 +106,7 @@ In descending order of priority:
 5. Accelerate deployment speed on AWS EC2
 6. Apply and test deployment strategies
 7. Test Jenkins pipeline on real project
-8. Update project documentation
-9. Organize or participate in Junior DevOps meetup
-10. Add monitoring capabilities
-11. Research AWS CI/CD
-12. Make Key Deployment Center/Process
+8. Update project documentation, in progress
+9. Add monitoring capabilities
+10. Research AWS CI/CD
+11. Make Key Deployment Center/Process
