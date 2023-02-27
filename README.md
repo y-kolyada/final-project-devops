@@ -1,4 +1,4 @@
-# Jenkins CI/CD prototype for Java development  \ Final Project L1
+# Jenkins CI/CD prototype for Java development
 
 Last release: v2.0.0
 
@@ -20,8 +20,8 @@ According to Amazon's vision, DevOps Practices are:
 
 ## Results
 
-1. [DevOps folder of the project](https://github.com/y-kolyada/final-project-devops)
-2. [Application "devopskb" folder of the project](https://github.com/y-kolyada/devopskb)
+1. [DevOps repository of the project](https://github.com/y-kolyada/final-project-devops)
+2. [Application "devopskb" repository of the project](https://github.com/y-kolyada/devopskb)
 
 
 ## Vendors
@@ -35,7 +35,7 @@ According to Amazon's vision, DevOps Practices are:
 5. **EC2** - [AWS CLI 2.9.23, Apache PL 2.0](https://www.ansible.com/)
 6. **BIN** - [Bind9 9.11.36, Mozilla PL 2.0](https://www.isc.org/)
 7. **GIT** - [Git 2.39.1, GNU GPL 2](https://git-scm.com/)
-8. **GHU** - [GitHub, Propriatory](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
+8. **GHU** - [GitHub, Proprietory](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
 9. **ANS** - [Ansible 2.14.2, GNU GPL 3](https://www.ansible.com/)
 10. **JEN** - [Jenkins 2.375.2, MIT](https://www.jenkins.io/)
 11. **PYT** - [Python 3.9.16, Python SFL](https://www.python.org/)
@@ -69,8 +69,8 @@ According to Amazon's vision, DevOps Practices are:
 
 
 - [VirtualBox & Vagrant](https://github.com/y-kolyada/final-project-devops/tree/main/vagrant)
-- [Terraform & AWS](https://github.com/y-kolyada/final-project-devops/tree/main/terraform)
 - [CentOS & Bash](https://github.com/y-kolyada/final-project-devops/tree/main/bash)
+- [Terraform & AWS](https://github.com/y-kolyada/final-project-devops/tree/main/terraform)
 - [Ansible & Python](https://github.com/y-kolyada/final-project-devops/tree/main/ansible)
 - [Jenkins](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins)
 - [Java, Spring, Maven, Git & Code](https://github.com/y-kolyada/devopskb)
@@ -81,8 +81,9 @@ Component matrix:
 
 ## Environments
 
-- **DEV**, development environment on VM "dev"
-- **QA**, test environment on VM "qa"
+- **DEV**, development environment on local VM "dev"
+- **QA**, test environment on local VM "qa"
+- **ITEG** (STAGE), end-to-end test environment on local VM "integ" (planned)
 - **PREPROD**, pre-production environment on local VM "prod"
 - **PROD**, production environment on AWS EC2 VM "prod-devopskb"
 
