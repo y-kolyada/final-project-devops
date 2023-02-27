@@ -32,7 +32,7 @@ According to Amazon's vision, DevOps Practices are:
 2. **VBO** - [VirtualBox 7.0.6, GNU GPL 2](https://www.virtualbox.org/)
 3. **VAG** - [Vagrant 2.3.4, MIT](https://developer.hashicorp.com/vagrant)
 4. **TER** - [Terraform 1.3.9, Mozilla PL 2.0](https://www.terraform.io/)
-5. **EC2** - [AWS CLI 2.9.23, Apache PL 2.0](https://www.ansible.com/)
+5. **EC2** - [AWS CLI 2.9.23, Apache PL 2.0](https://aws.amazon.com/cli/)
 6. **BIN** - [Bind9 9.11.36, Mozilla PL 2.0](https://www.isc.org/)
 7. **GIT** - [Git 2.39.1, GNU GPL 2](https://git-scm.com/)
 8. **GHU** - [GitHub, Proprietory](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
