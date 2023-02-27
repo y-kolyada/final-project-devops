@@ -6,6 +6,10 @@
 
 ### List of VMs
 
+* **“servers”** - an array of server VMs
+* **“devs”** - an array of workstation VMs
+
+
 ```bash
 servers = [
   { :hostname => "dev", :box => "centos/stream8", :version => "20210210.0",
@@ -47,6 +51,8 @@ devs = [
 ]
 ```
 
+The inventory “hosts” file for Ansible is automatically regenerated during “vagrant up”
+
 
 ### Provisioners
 
@@ -74,4 +80,4 @@ devs = [
 | install_virtualbox_guets_additions |         | no  | install virtualbox guest additions |
 
 
-* - "once" for the development env
+* "once" for the development env
