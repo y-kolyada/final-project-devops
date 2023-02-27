@@ -34,7 +34,7 @@ According to Amazon's vision, DevOps Practices are:
 4. **TER** - [Terraform 1.3.9, Mozilla PL 2.0](https://www.terraform.io/)
 5. **EC2** - [AWS CLI 2.9.23, Apache PL 2.0](https://www.ansible.com/)
 6. **BIN** - [Bind9 9.11.36, Mozilla PL 2.0](https://www.isc.org/)
-7. **GIT** - [Git 2.39.1, GNU GPL 2](https://git-scm.com/)\
+7. **GIT** - [Git 2.39.1, GNU GPL 2](https://git-scm.com/)
 8. **GHU** - [GitHub, Propriatory](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/licensing-a-repository)
 9. **ANS** - [Ansible 2.14.2, GNU GPL 3](https://www.ansible.com/)
 10. **JEN** - [Jenkins 2.375.2, MIT](https://www.jenkins.io/)
@@ -42,7 +42,7 @@ According to Amazon's vision, DevOps Practices are:
 12. **JAV** - [Java openjdk 17.0.6, GNU GPL 2](https://openjdk.org/)
 13. **MAV** - [Maven 3.5.4, ASL 2.0 and MIT](https://maven.apache.org/)
 14. **SPR** - [Spring 3.0.2, Apache PL 2.0](https://spring.io/)
-15. **COD** - [Visual Studio Code 1.75.1, https://code.visualstudio.com/license](https://code.visualstudio.com/)
+15. **COD** - [Visual Studio Code 1.75.1, MIT](https://code.visualstudio.com/license)
 
 
 ## Infrastructure
@@ -73,7 +73,7 @@ According to Amazon's vision, DevOps Practices are:
 - [CentOS & Bash](https://github.com/y-kolyada/final-project-devops/tree/main/bash)
 - [Ansible & Python](https://github.com/y-kolyada/final-project-devops/tree/main/ansible)
 - [Jenkins](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins)
-- [Java, Spring, Maven & Code](https://github.com/y-kolyada/devopskb)
+- [Java, Spring, Maven, Git & Code](https://github.com/y-kolyada/devopskb)
 
 Component matrix:
 
