@@ -1,13 +1,12 @@
 # Vagrant configuration
 
-
-## Vagrantfile
-
-
-### Plugins
+## Plugins
 
 * vagrant-disksize (0.1.3, global)
 * vagrant-libvirt (0.11.2, global)
+
+## Vagrantfile
+
 
 ### List of VMs
 
@@ -56,10 +55,12 @@ devs = [
 ]
 ```
 
-The inventory “hosts” file for Ansible is automatically regenerated during “vagrant up”
+The inventory “hosts” file for Ansible is automatically regenerated during “vagrant up”.
 
 
 ### Provisioners
+
+Provisioners with an execution state of "never" can be executed from a Vagrant cli or a Jenkins shell script.
 
 
 | Name                               | Run     | In script | Description                         |
