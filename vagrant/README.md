@@ -4,6 +4,11 @@
 ## Vagrantfile
 
 
+### Plugins
+
+* vagrant-disksize (0.1.3, global)
+* vagrant-libvirt (0.11.2, global)
+
 ### List of VMs
 
 * **“servers”** - an array of server VMs
