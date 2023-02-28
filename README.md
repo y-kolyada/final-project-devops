@@ -14,7 +14,7 @@ According to Amazon's vision, DevOps Practices are:
 2. Monitoring and observability - p2
 3. Continuous integration (CI) - p3
 4. Continuous delivery/continuous deployment (CD) - p4
-5. Microservices archirecture - p5
+5. Microservices architecture - p5
 6. Infrastructure as a code - p6
 
 
