@@ -149,7 +149,7 @@ See the "infra" view in the Jenkins GUI.
 | [vagrant-reboot-one](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/vagrant-reboot-one/Jenkinsfile) | vagrant | vagrant reboot one VM | infra | Jenkinsfile | ENV_NAME |
 | [linux-restart-chronyd](https://github.com/y-kolyada/final-project-devops/blob/main/jenkins/linux-restart-chronyd/Jenkinsfile) | ansible | restart chronyd on all infrastructure | infra | Jenkinsfile |  |
 
-### Infastructure initiation Jobs
+### Infrastructure initiation Jobs
 
 See the "infra" view in the Jenkins GUI.
 

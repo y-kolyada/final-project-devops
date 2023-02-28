@@ -70,8 +70,8 @@ According to Amazon's vision, DevOps Practices are:
 
 - [VirtualBox & Vagrant](https://github.com/y-kolyada/final-project-devops/tree/main/vagrant)
 - [CentOS & Bash](https://github.com/y-kolyada/final-project-devops/tree/main/bash)
-- [Terraform & AWS](https://github.com/y-kolyada/final-project-devops/tree/main/terraform)
 - [Ansible & Python](https://github.com/y-kolyada/final-project-devops/tree/main/ansible)
+- [Terraform & AWS](https://github.com/y-kolyada/final-project-devops/tree/main/terraform)
 - [Jenkins](https://github.com/y-kolyada/final-project-devops/tree/main/jenkins)
 - [Java, Spring, Maven, Git & Code](https://github.com/y-kolyada/devopskb)
 
