@@ -62,7 +62,6 @@ According to Amazon's vision, DevOps Practices are:
 | aws      | ec2          | xen            | prod-devopskb | vCPU x1 GenuineIntel       | 1GB   | 10GB  | xfs     |
 | local    | VirtualBox   | oracle         | dev001        | vCPU x2 AuthenticAMD       | 4GB   | 15GB  | xfs     |
 | local    | VirtualBox   | oracle         | qa001         | vCPU x2 AuthenticAMD       | 4GB   | 15GB  | xfs     |
-|          |              |                |               |                            |       |       |         |
 
 
 ## Infrastructure Components

@@ -14,24 +14,38 @@
 ### Configure System
 
 #### Global properties
+
+- ANSIBLE_HOST=ansible.ygorod.com
+- ANSIBLE_PATH=devops/final-project-devops/ansible
 - APP=devopskb
 - APP_RUN="java -jar devopskb.jar"
-- MAIN_CLASS=link.kolyada.devops.devopskb.DevopskbApplication
-- PROJECT_PATH=/home/devops/dev/devopskb
-- DEVOPS_PROJECT_PATH=/home/devops/devops/final-project-devops
-- SSH_OPTIONS="StrictHostKeyChecking=off"
 - BASH_PATH=devops/final-project-devops/bash
+- BRANCH_MAIN=main
+- DEV_HOST=dev.ygorod.com
+- DEV_PATH=dev
+- DEVOPS_PROJECT_NAME=final-project-devops
+- DEVOPS_PROJECT_PATH=/home/devops/devops/final-project-devops
 - DEVOPS_USER=***
+- DOMAIN=ygorod.com
+- ENV_DEV=dev
+- ENV_INTEG=integ
+- ENV_PROD=prod
+- ENV_QA=qa
+- MAIN_CLASS=link.kolyada.devops.devopskb.DevopskbApplication
+- PREPROD_HOST=preprod.ygorod.com
+- PROJECT_NAME=devopskb
+- PROJECT_PATH=/home/devops/dev/devopskb
+- QA_HOST=qa.ygorod.com
+- SSH_OPTIONS="StrictHostKeyChecking=off"
+- TERRAFORM_HOST=terraform.ygorod.com
+- TERRAFORM_PATH=devops/final-project-devops/terraform
+- VER_DEV=v0.0
+- VER_PROD=v1.0
+- VER_QA=v0.1
+- VG_DEFAUTL_USER=***
 - VG_HOST=h3.ygorod.com
 - VG_PATH=devops/final-project-devops/vagrant
 - VG_USER=***
-- VG_DEFAUTL_USER=***
-- ANSIBLE_HOST=ansible.ygorod.com
-- ANSIBLE_PATH=devops/final-project-devops/ansible
-- DEV_HOST=dev.ygorod.com
-- QA_HOST=qa.ygorod.com
-- TERRAFORM_HOST=terraform.ygorod.com
-- TERRAFORM_PATH=devops/final-project-devops/terraform
 
 
 ## Jenkins controller and agents
