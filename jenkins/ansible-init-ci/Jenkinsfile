@@ -1,0 +1,58 @@
+// ansible-init-ci
+// ver 1.0.0
+// date: 2023-02-19
+
+node("ansible") {
+    def projectHome
+    def u = env.DEVOPS_USER
+    def h = ""
+    def o = env.SSH_OPTIONS
+    
+    stage('Init DEV') {
+        echo 'Init DEV...'
+        
+        echo "DEVOPS_USER: ${u}"
+
+        h = env.DEV_HOST
+        echo "HOST: ${h}"
+        
+        sshagent (credentials: ['devops-id-rsa']) {
+            sh "ssh -o ${o} -l ${u} ${h} hostnamectl; df -Th /; uptime; \
+                lscpu -e=CPU,CORE,MAXMHZ,ONLINE; last | grep '' -m3"
+        }
+        
+        build job:'ansible-adduser-devops', parameters:[
+            string(name: 'ENV_NAME', value: env.ENV_DEV),
+        ], wait: true
+        
+        build job:'ansible-init-dev', parameters:[
+            string(name: 'ENV_NAME', value: env.ENV_DEV),
+            string(name: 'BRANCH', value: env.ENV_DEV),
+        ], wait: true
+    }
+    
+    stage('Init QA') {
+        echo 'Init QA...'
+
+        echo "DEVOPS_USER: ${u}"
+        
+        h = env.QA_HOST
+        echo "HOST: ${h}"
+        
+        sshagent (credentials: ['devops-id-rsa']) {
+            sh "ssh -o ${o} -l ${u} ${h} hostnamectl; df -Th /; uptime; \
+                lscpu -e=CPU,CORE,MAXMHZ,ONLINE; last | grep '' -m3"
+        }
+
+        build job:'ansible-adduser-devops', parameters:[
+            string(name: 'ENV_NAME', value: env.ENV_QA),
+        ], wait: true
+
+        build job:'ansible-init-dev', parameters:[
+            string(name: 'ENV_NAME', value: env.ENV_QA),
+            string(name: 'BRANCH', value: env.ENV_QA),
+        ], wait: true
+
+        sh 'echo "JOB_FINISH: $(date)"'
+    }
+}
