@@ -1,5 +1,5 @@
 // ansible-init-prod
-// ver 1.0.0
+// ver 1.0.1
 // date: 2023-02-19
 
 // Prerequisites:
@@ -96,7 +96,7 @@ node("ansible") {
         echo 'Install Java 17...'
         
         sh "ssh -o ${o} ${u}@${agent} 'cd ~/${home}; pwd; \
-            [[ \$(java -version) ]] || ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
+            [ \$(java -version) ] || ansible-playbook deploy_java17_devel.yml -e \"host_or_group=${envName}\"' \
         "
         echo 'java 17 installed...'
 
