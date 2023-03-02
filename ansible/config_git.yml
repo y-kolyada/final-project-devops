@@ -21,6 +21,7 @@
       ansible.builtin.shell: |
          git config --global user.email "yakov.kolyada@gmail.com"
          git config --global user.name "Yakov Kolyada"
+         git config --global pull.rebase false
          git config --list
       become: false
       register: git_config
