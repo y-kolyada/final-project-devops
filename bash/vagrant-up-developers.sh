@@ -1,4 +1,5 @@
 #!/bin/bash
+
 # vagrant-up-developers.sh
 # updated: 2023-02-03
 

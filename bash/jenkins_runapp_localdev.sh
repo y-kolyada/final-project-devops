@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# jenkins_runapp_localdev.sh
+# updated: 2023-02-10
+
 APP_RUN=$1
 PROJECT_PATH=$2
 MAIN_CLASS=$3

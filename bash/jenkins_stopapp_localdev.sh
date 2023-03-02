@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# jenkins_stopapp_localdev
+# updated: 2023-02-15
+
 APP_RUN=$1
 APP=$2
 
