@@ -1,12 +1,12 @@
 // cd-prod-aws
-// ver 1.0.1
+// ver 1.0.2
 // date: 2023-02-22
 
 // Prerequisites:
 // - build-app-dev job
 // - terraform-deploy-prodaws job
 
-node {
+node("centos") {
     def u = env.DEVOPS
     def h = env.VG_HOST
     def o = env.SSH_OPTIONS

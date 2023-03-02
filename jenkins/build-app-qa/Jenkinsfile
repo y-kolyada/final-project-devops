@@ -1,10 +1,10 @@
 // build-app-qa
-// ver 1.0.0
-// date: 2023-02-19
+// ver 1.0.2
+// date: 2023-02-21
 
 pipeline{
     agent {
-        label "ansible"
+        label "java"
     }
     
     environment {
@@ -162,6 +162,37 @@ pipeline{
                         '''
                     }
                 }
+            }
+        }
+        
+        stage('Auto Push to integ') {
+            steps {
+                script {
+                    def host = ""
+                    def app = env.APP
+
+                    if (env.ENV == "DEV") {
+                        withEnv(["HOST=${DEV_HOST}"]) {
+                            host = env.HOST
+                        }
+                    } else if (env.ENV == "QA") {
+                        withEnv(["HOST=${QA_HOST}"]) {
+                            host = env.HOST
+                        }
+                    }
+                    withEnv(["HOST=${host}"]) {
+                        sh 'echo "DEVOPS_USER@HOST: ${DEVOPS_USER}@${HOST}"'
+                        sh "ssh -o ${SSH_OPTIONS} ${DEVOPS_USER}@${HOST} 'hostnamectl; pwd; \
+                            cd ${PROJECT_PATH}; \
+                            echo \"Pull src from integ branch...\"; \
+                            git checkout integ; \
+                            git pull; \
+                            echo \"Merge qa into integ...\"; \
+                            git merge qa; \
+                            git push' \
+                        "
+                     }
+                }
                 sh 'echo "JOB_FINISH: $(date)"'
             }
         }
@@ -195,6 +226,5 @@ pipeline{
             }
         }
 */  
-
      }
 }
