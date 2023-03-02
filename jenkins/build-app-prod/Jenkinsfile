@@ -1,5 +1,5 @@
 // build-app-prod
-// ver 1.0.2
+// ver 1.0.4
 // date: 2023-02-22
 
 pipeline{
@@ -52,13 +52,15 @@ pipeline{
                         sh 'echo "DEVOPS_USER@HOST: ${DEVOPS_USER}@${HOST}"'
                         sh "ssh -o ${SSH_OPTIONS} ${DEVOPS_USER}@${HOST} 'hostnamectl; \
                             pwd; echo \"TAG: ${TAG}\"; \
-                            cd ${PROJECT_PATH}; \
+                            cd ${PROJECT_PATH}; pwd; \
                             [ -z ${TAG} ] && echo \"Pull src from integ branch...\"; \
                             [ -z ${TAG} ] && git checkout integ; \
                             [ -z ${TAG} ] && git pull; \
                             [ -z ${TAG} ] && echo \"Merge integ into main...\"; \
                             [ -z ${TAG} ] && git checkout main; \
-                            [ -z ${TAG} ] && git merge integ; \
+                            [ -z ${TAG} ] && git pull; \
+                            [ -z ${TAG} ] && git merge integ --no-edit; \
+                            [ -z ${TAG} ] && git push; \
                             [ -z ${TAG} ] || echo \"Pull src from tag...\"; \
                             [ -z ${TAG} ] || git checkout ${TAG}; \
                             [ -z ${TAG} ] || git branch -D tagbranch; \
