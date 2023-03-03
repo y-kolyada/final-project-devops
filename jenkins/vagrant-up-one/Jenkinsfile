@@ -1,6 +1,6 @@
 // vagrant-up-one
-// ver 1.0.0
-// date: 2023-02-15
+// ver 1.0.1
+// date: 2023-02-22
 
 node("vagrant") {
 
@@ -12,7 +12,7 @@ node("vagrant") {
     
     properties([
         parameters([
-            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001'], 
+            choice(choices: ['terraform', 'jenkins', 'jagent1', 'gitlab', 'gitlab1', 'dev', 'qa', 'integ', 'prod', 'dev001','qa001'], 
             description: 'Select the VM to start.', name: 'ENV_NAME')
         ])
     ])
