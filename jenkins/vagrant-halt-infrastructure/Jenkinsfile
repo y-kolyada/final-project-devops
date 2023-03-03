@@ -1,0 +1,8 @@
+// vagrant-halt-infrastructure
+// ver 1.0.0
+// date: 2023-02-21
+
+echo "--- ${JOB_NAME} ---"
+echo "JOB_START: $(date)"
+echo "BASH_PATH: ${BASH_PATH}"
+ssh -o "StrictHostKeyChecking=off" ${VG_USER}@${VG_HOST} "${BASH_PATH}/${JOB_NAME}.sh"
