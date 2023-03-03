@@ -1,0 +1,60 @@
+// aws-deploy-prod
+// ver 1.0.0
+// date: 2023-02-14
+
+pipeline {
+    agent {
+        label 'terraform'
+    }
+
+    stages {
+        stage('Init') {
+            steps {
+                echo "--- ${JOB_NAME} ---"
+                sh 'echo "JOB_START: $(date)"'
+        
+                echo "DEVOPS_USER: ${DEVOPS_USER}"
+                echo "HOST: ${TERRAFORM_HOST}"
+
+                sh "hostnamectl; df -Th /; uptime; last | grep '' -m3"
+            }
+        }
+        
+        stage('Init AWS') {
+            steps {
+                script {
+                    def u = env.DEVOPS_USER
+                    def h = env.TERRAFORM_HOST
+                    def o = env.SSH_OPTIONS
+                    def home = env.TERRAFORM_PATH
+                    
+                    sshagent (credentials: ['devops-id-rsa']) {
+                        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+                        terraform apply -auto-approve; \
+                        terraform output -raw instance_public_ip > prod_public_ip'"
+                    }
+                }
+                echo 'aws ec2 activated...'
+            }
+        }
+        
+        stage('Run App on AWS') {
+            steps {
+                script {
+                    def u = env.DEVOPS_USER
+                    def h = env.TERRAFORM_HOST
+                    def o = env.SSH_OPTIONS
+                    def home = env.TERRAFORM_PATH
+                    
+                    sshagent (credentials: ['devops-id-rsa']) {
+                        sh "ssh -o ${o} ${u}@${h} 'cd ${home}; \
+                        ../bash/aws-deploy-prod.sh'"
+                    }
+                }
+                echo 'app is running...'
+        
+                sh 'echo "JOB_FINISH: $(date)"'
+            }
+        }
+    }
+}
